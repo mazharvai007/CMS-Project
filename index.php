@@ -1,4 +1,7 @@
 <?php 
+    // Connect DB
+    include("includes/db.php");
+    
     // Header and Navigation
     include("includes/header.php");
     include("includes/navigation.php");
