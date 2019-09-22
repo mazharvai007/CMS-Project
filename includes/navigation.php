@@ -23,7 +23,7 @@
                         // Connect data for getting data from categories
                         $select_all_categories_query = mysqli_query($connect, $query);
 
-                        // Fetch the data from category by associative array
+                        // Fetch the category from categories table by associative array
                         while ($row = mysqli_fetch_assoc($select_all_categories_query)) {
                             $cat_title = $row["cat_title"];
 
@@ -31,15 +31,6 @@
                         }
                     
                     ?>
-                    <!-- <li>
-                        <a href="#">About</a>
-                    </li>
-                    <li>
-                        <a href="#">Services</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
-                    </li> -->
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

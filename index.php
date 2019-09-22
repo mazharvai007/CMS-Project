@@ -1,21 +1,38 @@
-<?php 
-    // Connect DB
-    include("includes/db.php");
-    
-    // Header and Navigation
-    include("includes/header.php");
-    include("includes/navigation.php");
+<?php
+// Connect DB
+include("includes/db.php");
+
+// Header and Navigation
+include("includes/header.php");
+include("includes/navigation.php");
 ?>
 
 
 
-    <!-- Page Content -->
-    <div class="container">
+<!-- Page Content -->
+<div class="container">
 
-        <div class="row">
+    <div class="row">
 
-            <!-- Blog Entries Column -->
-            <div class="col-md-8">
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+
+            <?php
+
+            $query = "SELECT * FROM posts";
+            $select_all_posts_query = mysqli_query($connect, $query);
+
+            while ($posts = mysqli_fetch_assoc($select_all_posts_query)) {
+                $post_title = $posts["post_title"];
+                $post_author = $posts["post_author"];
+                $post_date = $posts["post_date"];
+                $post_image = $posts["post_image"];
+                $post_content = $posts["post_content"];
+                $post_tags = $posts["post_tags"];
+                $post_comments_count = $posts["post_comments_count"];
+                $post_status = $posts["post_status"];
+
+                ?>
 
                 <h1 class="page-header">
                     Page Heading
@@ -24,31 +41,37 @@
 
                 <!-- First Blog Post -->
                 <h2>
-                    <a href="#">Blog Post Title</a>
+                    <a href="#"><?php echo $post_title; ?></a>
                 </h2>
                 <p class="lead">
-                    by <a href="index.php">Start Bootstrap</a>
+                    by <a href="index.php"><?php echo $post_author; ?></a>
                 </p>
-                <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:00 PM</p>
+                <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date; ?></p>
                 <hr>
-                <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+                <img class="img-responsive" src="<?php echo $post_image; ?>" alt="<?php echo $post_title; ?>">
                 <hr>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, veritatis, tempora, necessitatibus inventore nisi quam quia repellat ut tempore laborum possimus eum dicta id animi corrupti debitis ipsum officiis rerum.</p>
+                <p><?php echo $post_content; ?></p>
                 <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
                 <hr>
 
-            </div>
-            
-            <!-- Siderbar -->
-            <?php include("includes/sidebar.php") ?>
+            <?php }
+
+            ?>
+
+
 
         </div>
-        <!-- /.row -->
 
-        <hr>
+        <!-- Siderbar -->
+        <?php include("includes/sidebar.php") ?>
 
-<!-- Footer -->
-<?php 
+    </div>
+    <!-- /.row -->
+
+    <hr>
+
+    <!-- Footer -->
+    <?php
     include("includes/footer.php");
-?>
+    ?>
