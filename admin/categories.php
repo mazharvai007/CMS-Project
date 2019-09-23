@@ -23,12 +23,30 @@ include("includes/admin_navigation.php");
         <!-- Add and show Category -->
         <div class="row">
             <div class="col-lg-6">
+                <?php 
+                
+                    if (isset($_POST["submit"])) {
+                        $cat_title = $_POST["cat_title"];
+
+                        if ($cat_title === "" || empty($cat_title)) {
+                            echo "This field should be not be empty";
+                        } else {
+                            $query = "INSERT INTO categories(cat_title) VALUES('{$cat_title}')";
+                            $create_category_query = mysqli_query($connect, $query);
+
+                            if (!$create_category_query) {
+                                die("Query Failed!" . mysqli_error($connect));
+                            }
+                        }
+                    }
+
+                ?>
                 <form action="" method="post">
                     <div class="form-group">
                         <label for="cat_title">Category Name</label>
                         <input type="text" class="form-control" id="cat_title" name="cat_title">
                     </div>
-                    <button type="submit" class="btn btn-primary" value="Add Category">Add Category</button>
+                    <button type="submit" name="submit" class="btn btn-primary" value="Add Category">Add Category</button>
                 </form>
             </div>
             <div class="col-lg-6">
