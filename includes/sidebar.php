@@ -23,7 +23,7 @@
                         // Select all data from categoried
                         $query = "SELECT * FROM categories";
                         // Connect data for getting data from categories
-                        $select_all_categories_query = mysqli_query($connect, $query);
+                        $select_categories_sidebar = mysqli_query($connect, $query);
 
                     ?>
                     <h4>Blog Categories</h4>
@@ -33,7 +33,8 @@
                                 <?php
 
                                     // Fetch the category from categories table by associative array
-                                    while ($row = mysqli_fetch_assoc($select_all_categories_query)) {
+                                    while ($row = mysqli_fetch_assoc($select_categories_sidebar)) 
+                                    {
                                         $cat_title = $row["cat_title"];
 
                                         echo "<li><a href='#'>{$cat_title}</a></li>";

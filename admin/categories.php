@@ -1,8 +1,8 @@
 <?php
 // For header
-include("includes/header.php");
+include("includes/admin_header.php");
 // For navigation
-include("includes/navigation.php");
+include("includes/admin_navigation.php");
 ?>
 
 <div id="page-wrapper">
@@ -32,22 +32,34 @@ include("includes/navigation.php");
                 </form>
             </div>
             <div class="col-lg-6">
+                <?php
+                // Select all data from categoried
+                $query = "SELECT * FROM categories";
+                // Connect data for getting data from categories
+                $select_categories = mysqli_query($connect, $query);
+                ?>
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th>Id</th>
-                            <th>Category Title</th>
+                            <th>ID</th>
+                            <th>Category Name</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>JavaScript</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>HTML</td>
-                        </tr>
+                        <?php
+                            // Fetch the category from categories table by associative array
+                            while ($row = mysqli_fetch_assoc($select_categories)) {
+                                $cat_id = $row["cat_id"];
+                                $cat_title = $row["cat_title"];
+
+                                echo "
+                                    <tr>
+                                        <td>{$cat_id}</td>
+                                        <td>{$cat_title}</td>
+                                    </tr>
+                                ";
+                            }
+                        ?>
                     </tbody>
                 </table>
             </div>
@@ -60,5 +72,5 @@ include("includes/navigation.php");
 <!-- /#page-wrapper -->
 
 <?php
-include("includes/footer.php");
+include("includes/admin_footer.php");
 ?>

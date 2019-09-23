@@ -1,8 +1,8 @@
 <?php
     // For header
-    include("includes/header.php");
+    include("includes/admin_header.php");
     // For navigation
-    include("includes/navigation.php");
+    include("includes/admin_navigation.php");
 ?>
 
 <div id="page-wrapper">
@@ -35,5 +35,5 @@
 <!-- /#page-wrapper -->
 
 <?php 
-    include("includes/footer.php");
+    include("includes/admin_footer.php");
 ?>
