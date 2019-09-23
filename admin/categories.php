@@ -50,21 +50,21 @@ include("includes/admin_navigation.php");
                 </form>
             </div>
             <div class="col-lg-6">
-                <?php
-                // Select all data from categoried
-                $query = "SELECT * FROM categories";
-                // Connect data for getting data from categories
-                $select_categories = mysqli_query($connect, $query);
-                ?>
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Category Name</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
+                            // Select all data from categories
+                            $query = "SELECT * FROM categories";
+                            // Connect data for getting data from categories
+                            $select_categories = mysqli_query($connect, $query);
+
                             // Fetch the category from categories table by associative array
                             while ($row = mysqli_fetch_assoc($select_categories)) {
                                 $cat_id = $row["cat_id"];
@@ -74,9 +74,24 @@ include("includes/admin_navigation.php");
                                     <tr>
                                         <td>{$cat_id}</td>
                                         <td>{$cat_title}</td>
+                                        <td><a href='categories.php?delete={$cat_id}'>x</a></td>
                                     </tr>
                                 ";
                             }
+                        ?>
+
+                        <?php
+                            // Start Delete Query
+                            if (isset($_GET['delete'])) {
+                                $cat_delete = $_GET['delete'];
+
+                                $query = "DELETE FROM categories WHERE cat_id = {$cat_delete}";
+                                $delete_query = mysqli_query($connect, $query);
+                                
+                                /*Fix the second click delete problem. The function is reloading the page if click on the delete button.*/
+                                header("Location: categories.php");
+                            }                            
+                            // End Delete Query                        
                         ?>
                     </tbody>
                 </table>
