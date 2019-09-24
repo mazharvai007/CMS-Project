@@ -1,41 +1,39 @@
 <?php
     // For header
-    include("includes/header.php");
+    include("includes/admin_header.php");
     // For navigation
-    include("includes/navigation.php");
+    include("includes/admin_navigation.php");
 ?>
 
+<div id="page-wrapper">
 
+    <div class="container-fluid">
 
-        <div id="page-wrapper">
-
-            <div class="container-fluid">
-
-                <!-- Page Heading -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1 class="page-header">
-                            Welcome to Admin
-                            <small>Author</small>
-                        </h1>
-                        <ol class="breadcrumb">
-                            <li>
-                                <i class="fa fa-dashboard"></i> <a href="index.html">Dashboard</a>
-                            </li>
-                            <li class="active">
-                                <i class="fa fa-file"></i> Admin
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-                <!-- /.row -->
-
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Welcome to Admin
+                    <small>Author</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i> <a href="index.html">Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-file"></i> Admin
+                    </li>
+                </ol>
             </div>
-            <!-- /.container-fluid -->
-
         </div>
-        <!-- /#page-wrapper -->
+        <!-- /.row -->
+
+    </div>
+    <!-- /.container-fluid -->
+
+</div>
+<!-- /#page-wrapper -->
 
 <?php 
-    include("includes/footer.php");
+    include("includes/admin_footer.php");
 ?>

@@ -1,3 +1,13 @@
+<?php 
+    // Connect DB
+    include("../includes/db.php");
+    
+    // Connect functions.php file
+    include("functions.php");
+    
+    ob_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
