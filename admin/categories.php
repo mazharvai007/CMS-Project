@@ -23,23 +23,10 @@ include("includes/admin_navigation.php");
         <!-- Add and show Category -->
         <div class="row">
             <div class="col-lg-6">
-                <?php
-                    if (isset($_POST["submit"])) {
-                        $cat_title = $_POST["cat_title"];
-
-                        if ($cat_title === "" || empty($cat_title)) {
-                            echo "This field should be not be empty";
-                        } else {
-                            $query = "INSERT INTO categories(cat_title) VALUES('{$cat_title}')";
-                            $create_category_query = mysqli_query($connect, $query);
-
-                            if (!$create_category_query) {
-                                die("Query Failed!" . mysqli_error($connect));
-                            }
-                        }
-                    }
-                ?>
                 <!-- Start Add Category -->
+                <?php
+                    add_categories();
+                ?>
                 <form action="" method="post">
                     <div class="form-group">
                         <label for="cat_title">Category Name</label>
@@ -70,40 +57,14 @@ include("includes/admin_navigation.php");
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- Display Cateries -->
                         <?php
-                        // Select all data from categories
-                        $query = "SELECT * FROM categories";
-                        // Connect data for getting data from categories
-                        $select_categories = mysqli_query($connect, $query);
-
-                        // Fetch the category from categories table by associative array
-                        while ($row = mysqli_fetch_assoc($select_categories)) {
-                            $cat_id = $row["cat_id"];
-                            $cat_title = $row["cat_title"];
-
-                            echo "
-                                    <tr>
-                                        <td>{$cat_id}</td>
-                                        <td>{$cat_title}</td>
-                                        <td><a href='categories.php?delete={$cat_id}'>Delete</a></td>
-                                        <td><a href='categories.php?edit={$cat_id}'>Edit</a></td>
-                                    </tr>
-                                ";
-                        }
+                            display_categories();
                         ?>
 
+                        <!-- Delete Categories -->
                         <?php
-                        // Start Delete Query
-                        if (isset($_GET['delete'])) {
-                            $cat_delete = $_GET['delete'];
-
-                            $query = "DELETE FROM categories WHERE cat_id = {$cat_delete}";
-                            $delete_query = mysqli_query($connect, $query);
-
-                            /*Fix the second click delete problem. The function is reloading the page if click on the delete button.*/
-                            header("Location: categories.php");
-                        }
-                        // End Delete Query                        
+                            delete_categories();
                         ?>
                     </tbody>
                 </table>
