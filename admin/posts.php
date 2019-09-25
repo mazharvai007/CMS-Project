@@ -24,23 +24,17 @@ include("includes/admin_navigation.php");
         <div class="row">
             <div class="col-lg-12">
                 <?php 
+                    // Check the source if avaible.
                     if (isset($_GET['source'])) {
                         $source = $_GET['source'];
                     } else {
                         $source = "";
                     }
-
+                    // Include the page based on condition technique
                     switch ($source) {
-                        case '34':
-                            echo "Nice";
+                        case 'add_post':
+                            include("includes/add_post.php");
                             break;
-                        case '100':
-                            echo "Nice";
-                            break;
-                        case '200':
-                            echo "Nice";
-                            break;
-
                         default:
                             include("includes/view_all_posts.php"); 
                             break;
