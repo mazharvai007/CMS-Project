@@ -8,25 +8,19 @@
 
         $post_image = $_FILES['image']['name'];
         $post_image_temp = $_FILES['image']['temp_name'];
-        if (isset($post_image)) {
-            if (!empty($post_image)) {
-                $location = '../../images/';
-                if (move_uploaded_file($post_image_temp, $location.$post_image)) {
-                    echo "Image added successfully";
-                }
-            }
-        } else {
-            echo "Please select an image";
-        }
-
+        
         $post_tags = $_POST['post_tags'];
         $post_content = $_POST['post_content'];
         $post_date = date("d-m-y");
         $post_comments_count = 4;
-
+        
+        // The uploaded image is moved to the images folder
+        move_uploaded_file($post_image_temp,"../images/$post_image");
 
         $query = "INSERT INTO posts(post_category_id, post_title, post_author, post_date, post_image, post_content, post_tags, post_comments_count, post_status)"; 
         $query .= "VALUES('{$post_category_id}', '{$post_title}', '{$post_author}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_comments_count}', '{$post_status}')";
+
+
     }
 ?>
 <form action="" method="post" entype="multipart/form-data">
