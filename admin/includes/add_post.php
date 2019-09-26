@@ -18,7 +18,7 @@
         move_uploaded_file($post_image_tmp,"../images/$post_image");
 
         $query = "INSERT INTO posts(post_category_id, post_title, post_author, post_date, post_image, post_content, post_tags, post_comments_count, post_status)"; 
-        $query .= "VALUES({$post_category_id}, '{$post_title}', '{$post_author}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_comments_count}', '{$post_status}', )";
+        $query .= "VALUES({$post_category_id}, '{$post_title}', '{$post_author}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_comments_count}', '{$post_status}')";
 
         $create_post_query = mysqli_query($connect, $query);
 

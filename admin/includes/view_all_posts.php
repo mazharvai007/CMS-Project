@@ -10,6 +10,7 @@
             <th>Tags</th>
             <th>Comments</th>
             <th>Date</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -43,9 +44,14 @@
                         <td>{$post_tags}</td>
                         <td>{$post_comments}</td>
                         <td>{$post_date}</td>
+                        <td><a href='posts.php?delete={$post_id}'>Delete</a></td>
                     </tr>
                 ";
             }                            
         ?>
     </tbody>
 </table>
+
+<?php
+    delete_post();
+?>

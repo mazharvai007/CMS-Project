@@ -3,7 +3,8 @@
     // Check the query is failed or not
     function confirmQuery($result) {
         // Connect with DB globally inside each function
-        global $connect;        
+        global $connect;
+
         if (!$result) {
             die("Query Failed! " . mysqli_error($connect));
         }        
@@ -69,5 +70,18 @@
             /*Fix the second click delete problem. The function is reloading the page if click on the delete button.*/
             header("Location: categories.php");
         }        
+    }
+
+    function delete_post() {
+        // Connect with DB globally inside each function
+        global $connect;
+
+        if (isset($_GET['delete'])) {
+            $delete_post_id = $_GET['delete'];
+            $query = "DELETE FROM posts WHERE post_id = {$delete_post_id}";
+            $delete_query = mysqli_query($connect, $query);
+
+            header("Location: posts.php");
+        }
     }
 ?>
