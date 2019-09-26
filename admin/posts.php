@@ -33,10 +33,12 @@ include("includes/admin_navigation.php");
                     // Include the page based on condition technique
                     switch ($source) {
                         case 'add_post':
-                            require_once("includes/add_post.php");
+                            include ("includes/add_post.php");
                             break;
+                        case 'edit_post':
+                            include ("includes/edit_post.php");
                         default:
-                            include("includes/view_all_posts.php"); 
+                            include ("includes/view_all_posts.php");
                             break;
                     }
 
