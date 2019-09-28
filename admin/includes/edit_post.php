@@ -23,31 +23,49 @@
 
 <form action="" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="title">Post Title</label>
+        <label for="title">Title</label>
         <input type="text" class="form-control" value="<?php echo $post_title; ?>" name="title">
     </div>
     <div class="form-group">
-        <label for="category">Post Category ID</label>
-        <input type="text" class="form-control" value="<?php echo $post_category; ?>" name="post_category_id">
+        <label for="">Category</label>
+        <select name="" id="" class="form-control">
+            <?php
+                // Select all data from categories
+                $query = "SELECT * FROM categories";
+                // Connect data for getting data from categories
+                $select_categories = mysqli_query($connect, $query);
+
+                confirmQuery($select_categories);
+
+                // Fetch the category from categories table by associative array
+                while ($row = mysqli_fetch_assoc($select_categories)) {
+                    $cat_id = $row["cat_id"];
+                    $cat_title = $row['cat_title'];
+
+                    echo "
+                        <option value='{$cat_id}'>{$cat_title}</option>
+                    ";
+                }
+            ?>
+        </select>
     </div>
     <div class="form-group">
-        <label for="author">Post Author</label>
+        <label for="author">Author</label>
         <input type="text" class="form-control" value="<?php echo $post_author; ?>" name="author">
     </div>
     <div class="form-group">
-        <label for="status">Post Status</label>
+        <label for="status">Status</label>
         <input type="text" name="post_status" value="<?php echo $post_status; ?>" class="form-control">
     </div>
     <div class="form-group">
-        <label for="image">Post Image</label>
-        <input type="file" name="image" class="form-control">
+        <img src="../images/<?php echo $post_image; ?>" alt="<?php echo $post_title; ?>" width="100">
     </div>
     <div class="form-group">
-        <label for="tags">Post Tags</label>
+        <label for="tags">Tags</label>
         <input type="text" name="post_tags" value="<?php echo $post_tags; ?>" class="form-control">
     </div>
     <div class="form-group">
-        <label for="content">Post Content</label>
+        <label for="content">Content</label>
         <textarea class="form-control" name="post_content" id="" cols="30" rows="10"><?php echo $post_content; ?></textarea>
     </div>
     <div class="form-group">
