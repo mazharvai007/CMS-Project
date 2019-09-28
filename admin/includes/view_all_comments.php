@@ -3,6 +3,7 @@
         <tr>
             <th>ID</th>
             <th>Author</th>
+            <th>Post Name</th>
             <th>Comment</th>
             <th>Email</th>
             <th>Status</th>
@@ -31,29 +32,29 @@
                 $comment_status = $row["comment_status"];
                 $comment_date = $row["comment_date"];
 
-                // Select all data from categories
-                $query = "SELECT * FROM categories WHERE cat_id = $post_category";
-                // Connect data for getting data from categories
-                $select_categories = mysqli_query($connect, $query);
-
-                // Fetch the category from categories table by associative array
-                while ($row = mysqli_fetch_assoc($select_categories)) {
-                    $cat_id = $row["cat_id"];
-                    $cat_title = $row['cat_title'];
-                }                
+//                // Select all data from categories
+//                $query = "SELECT * FROM categories WHERE cat_id = $post_category";
+//                // Connect data for getting data from categories
+//                $select_categories = mysqli_query($connect, $query);
+//
+//                // Fetch the category from categories table by associative array
+//                while ($row = mysqli_fetch_assoc($select_categories)) {
+//                    $cat_id = $row["cat_id"];
+//                    $cat_title = $row['cat_title'];
+//                }
 
                 echo "
                     <tr>
                         <td>{$comment_id}</td>
-                        <td>{$comment_post_id}</td>
                         <td>{$comment_author}</td>
+                        <td>{$comment_post_id}</td>
                         <td>{$comment_content}</td>
                         <td>{$comment_email}</td>
                         <td>{$comment_status}</td>
+                        <td>Some Text</td>
                         <td>{$comment_date}</td>
                         <td><a href='#'>Approved</a></td>
                         <td><a href='#'>Unapproved</a></td>                        
-                        <td><a href='#'>Edit</a></td>
                         <td><a href='#'>Delete</a></td>
                     </tr>
                 ";
