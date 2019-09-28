@@ -66,11 +66,16 @@ include("includes/navigation.php");
 
             <?php
 
+                // Check the comment form fields
                 if (isset($_POST['create_comment'])) {
-                    echo $_POST['comment_author'];
-                    echo $_POST['comment_email'];
-                    echo $_POST['comment_content'];
+                    $the_post_id = $_GET['p_id'];
+                    $comment_author = $_POST['comment_author'];
+                    $comment_email = $_POST['comment_email'];
+                    $comment_content = $_POST['comment_content'];
                 }
+
+                // Getting data from the DB
+            $query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) VALUES ($the_post_id, '{$comment_author}', '{$comment_email}', '{$comment_content}', 'unapproved', now())"
 
             ?>
 
