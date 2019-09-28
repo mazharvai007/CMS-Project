@@ -72,10 +72,17 @@ include("includes/navigation.php");
                     $comment_author = $_POST['comment_author'];
                     $comment_email = $_POST['comment_email'];
                     $comment_content = $_POST['comment_content'];
+
+                    // Getting data from the DB
+                    $query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) VALUES ($the_post_id, '{$comment_author}', '{$comment_email}', '{$comment_content}', 'unapproved', now())";
+
+                    $create_comment_query = mysqli_query($connect, $query);
+
+                    if (!$create_comment_query) {
+                        die("Query Failed!" . mysqli_error($connect));
+                    }
                 }
 
-                // Getting data from the DB
-            $query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) VALUES ($the_post_id, '{$comment_author}', '{$comment_email}', '{$comment_content}', 'unapproved', now())"
 
             ?>
 
