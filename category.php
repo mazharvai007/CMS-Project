@@ -29,7 +29,7 @@ include("includes/navigation.php");
                     $post_author = $posts["post_author"];
                     $post_date = $posts["post_date"];
                     $post_image = $posts["post_image"];
-                    $post_content = $posts["post_content"];
+                    $post_content = substr($posts["post_content"], 0, 300);
                     $post_tags = $posts["post_tags"];
                     $post_comments_count = $posts["post_comments_count"];
                     $post_status = $posts["post_status"];
