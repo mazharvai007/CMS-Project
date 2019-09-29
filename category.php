@@ -16,7 +16,11 @@ include("includes/navigation.php");
 
             <?php
 
-                $query = "SELECT * FROM posts ";
+                if (isset($_GET['category'])) {
+                    $category_posts = $_GET['category'];
+                }
+
+                $query = "SELECT * FROM posts WHERE post_category_id = $category_posts ";
                 $select_all_posts_query = mysqli_query($connect, $query);
 
                 while ($posts = mysqli_fetch_assoc($select_all_posts_query)) {
@@ -26,9 +30,11 @@ include("includes/navigation.php");
                     $post_date = $posts["post_date"];
                     $post_image = $posts["post_image"];
                     $post_content = substr($posts["post_content"], 0, 300);
+                    $post_tags = $posts["post_tags"];
+                    $post_comments_count = $posts["post_comments_count"];
                     $post_status = $posts["post_status"];
 
-                    if ($post_status !== 'published') {?>
+                    ?>
 
                     <h1 class="page-header">
                         Page Heading
@@ -54,7 +60,7 @@ include("includes/navigation.php");
                     <hr>
 
                 <?php }
-                }
+
             ?>
 
 
