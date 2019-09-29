@@ -24,15 +24,11 @@ include("includes/navigation.php");
                 $select_all_posts_query = mysqli_query($connect, $query);
 
                 while ($posts = mysqli_fetch_assoc($select_all_posts_query)) {
-                    $post_id = $posts["post_id"];
                     $post_title = $posts["post_title"];
                     $post_author = $posts["post_author"];
                     $post_date = $posts["post_date"];
                     $post_image = $posts["post_image"];
                     $post_content = $posts["post_content"];
-                    $post_tags = $posts["post_tags"];
-                    $post_comments_count = $posts["post_comments_count"];
-                    $post_status = $posts["post_status"];
 
                     ?>
 
@@ -83,7 +79,7 @@ include("includes/navigation.php");
                     }
 
                     // Increase the comments to each post
-                    $query = "UPDATE posts SET post_comments_count = post_comments_count + 1 WHERE post_id = $the_post_id ";
+                    $query = "UPDATE posts SET post_comments_count = post_comments_count + 1 WHERE post_id = $the_post_id";
                     $update_comment_count = mysqli_query($connect, $query) ;
 
 

@@ -16,7 +16,7 @@ include("includes/navigation.php");
 
             <?php
 
-                $query = "SELECT * FROM posts";
+                $query = "SELECT * FROM posts ";
                 $select_all_posts_query = mysqli_query($connect, $query);
 
                 while ($posts = mysqli_fetch_assoc($select_all_posts_query)) {
@@ -26,8 +26,9 @@ include("includes/navigation.php");
                     $post_date = $posts["post_date"];
                     $post_image = $posts["post_image"];
                     $post_content = substr($posts["post_content"], 0, 300);
+                    $post_status = $posts["post_status"];
 
-                    ?>
+                    if ($post_status !== 'published') {?>
 
                     <h1 class="page-header">
                         Page Heading
@@ -53,7 +54,7 @@ include("includes/navigation.php");
                     <hr>
 
                 <?php }
-
+                }
             ?>
 
 
