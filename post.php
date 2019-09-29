@@ -71,7 +71,7 @@ include("includes/navigation.php");
                     $the_post_id = $_GET['p_id'];
                     $comment_author = $_POST['comment_author'];
                     $comment_email = $_POST['comment_email'];
-                    $comment_content = $_POST['comment_content'];
+                    $comment_content = mysqli_escape_string($connect, $_POST['comment_content']);
 
                     // Getting data from the DB
                     $query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) VALUES ($the_post_id, '{$comment_author}', '{$comment_email}', '{$comment_content}', 'unapproved', now())";
@@ -81,6 +81,12 @@ include("includes/navigation.php");
                     if (!$create_comment_query) {
                         die("Query Failed!" . mysqli_error($connect));
                     }
+
+                    // Increase the comments to each post
+                    $query = "UPDATE posts SET post_comments_count = post_comments_count + 1 WHERE post_id = $the_post_id ";
+                    $update_comment_count = mysqli_query($connect, $query) ;
+
+
                 }
 
 
