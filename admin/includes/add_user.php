@@ -13,8 +13,6 @@
         $username = $_POST["username"];
         $user_email = $_POST["user_email"];
         $user_password = $_POST["user_password"];
-//        $user_date = date('d-m-y');
-//        $user_randSalt = $_POST["user_randSalt"];
 
         $query = "INSERT INTO users(user_firstname, user_lastname, user_role, user_image, username, user_email, user_password) VALUES('{$user_firstname}', '{$user_lastname}', '{$user_role}', '{$user_image}', '{$username}', '{$user_email}', '{$user_password}')";
 
@@ -38,7 +36,6 @@
            <option value="">---Select Option---</option>
            <option value="admin">Admin</option>
            <option value="subscriber">Subscriber</option>
-           <option value="manager">Manager</option>
         </select>
     </div>
     <div class="form-group">
