@@ -11,7 +11,10 @@
         <th>Role</th>
         <th>Date</th>
         <th>Rand Salt</th>
-<!--        <th>Delete</th>-->
+        <th>Status</th>
+        <th>Approved</th>
+        <th>Unapproved</th>
+        <th>Delete</th>
     </tr>
     </thead>
     <tbody>
@@ -33,6 +36,7 @@
         $user_image = $row["user_image"];
         $user_role = $row["user_role"];
         $user_randSalt = $row["user_randSalt"];
+        $user_status = $row["user_status"];
 
 
 
@@ -45,9 +49,12 @@
             echo "<td>$user_email</td>";
             echo "<td>$user_image</td>";
             echo "<td>$user_role</td>";
-//            echo "<td><a href='comments.php?approved=$comment_id'>Approved</a></td>";
-//            echo "<td><a href='comments.php?unapproved=$comment_id'>Unapproved</a></td>";
-//            echo "<td><a href='comments.php?delete=$comment_id'>Delete</a></td>";
+            echo "<td>Date</td>";
+            echo "<td>What is it?</td>";
+            echo "<td>$user_status</td>";
+            echo "<td><a href='users.php?approved=$user_id'>Approved</a></td>";
+            echo "<td><a href='users.php?unapproved=$user_id'>Unapproved</a></td>";
+            echo "<td><a href='users.php?delete=$user_id'>Delete</a></td>";
         echo "</tr>";
     }
     ?>
@@ -56,24 +63,24 @@
 
 <?php
 if (isset($_GET['approved'])) {
-    $approved_comment_id = $_GET['approved'];
-    $query = "UPDATE comments SET comment_status = 'approved' WHERE comment_id = $approved_comment_id ";
-    $approved_comment = mysqli_query($connect, $query);
+    $approved_user_id = $_GET['approved'];
+    $query = "UPDATE users SET user_status = 'approved' WHERE user_id = $approved_user_id ";
+    $approved_user = mysqli_query($connect, $query);
 
-    header("Location: comments.php");
+    header("Location: users.php");
 }
 if (isset($_GET['unapproved'])) {
-    $unapproved_comment_id = $_GET['unapproved'];
-    $query = "UPDATE comments SET comment_status = 'unapproved' WHERE comment_id = $unapproved_comment_id ";
-    $unapproved_comment = mysqli_query($connect, $query);
+    $unapproved_user_id = $_GET['unapproved'];
+    $query = "UPDATE users SET user_status = 'unapproved' WHERE user_id = $unapproved_user_id ";
+    $unapproved_user = mysqli_query($connect, $query);
 
-    header("Location: comments.php");
+    header("Location: users.php");
 }
 if (isset($_GET['delete'])) {
-    $delete_comment_id = $_GET['delete'];
-    $query = "DELETE FROM comments WHERE comment_id = {$delete_comment_id}";
-    $delete_comment = mysqli_query($connect, $query);
+    $delete_user_id = $_GET['delete'];
+    $query = "DELETE FROM users WHERE user_id = {$delete_user_id}";
+    $delete_user = mysqli_query($connect, $query);
 
-    header("Location: comments.php");
+    header("Location: users.php");
 }
 ?>
