@@ -6,6 +6,15 @@
     include("functions.php");
     
     ob_start();
+    session_start();
+
+    if (!isset($_SESSION['user_role'])) {
+        header("Location: ../index.php");
+    } else {
+        if ($_SESSION['user_role'] !== 'admin') {
+            header("Location: ../index.php");
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +28,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin - Bootstrap Admin Template</title>
+    <title>CMS Admin</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
