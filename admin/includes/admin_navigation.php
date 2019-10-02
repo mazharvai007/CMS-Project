@@ -17,7 +17,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li>
-                    <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                    <a href="profile.php"><i class="fa fa-fw fa-user"></i> Profile</a>
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
@@ -64,7 +64,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-fw fa-wrench"></i> Profile</a>
+                <a href="profile.php"><i class="fa fa-fw fa-wrench"></i> Profile</a>
             </li>
         </ul>
     </div>
