@@ -28,7 +28,7 @@ include("includes/navigation.php");
                     $post_content = substr($posts["post_content"], 0, 300);
                     $post_status = $posts["post_status"];
 
-                    if ($post_status !== 'published') {?>
+                    if ($post_status == 'published') {?>
 
                     <h1 class="page-header">
                         Page Heading
