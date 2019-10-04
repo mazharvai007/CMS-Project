@@ -85,10 +85,33 @@
         <label for="author">Author</label>
         <input type="text" class="form-control" value="<?php echo $post_author; ?>" name="author">
     </div>
+
     <div class="form-group">
-        <label for="status">Status</label>
-        <input type="text" name="post_status" value="<?php echo $post_status; ?>" class="form-control">
+        <label for="">Post Staus</label>
+        <select name="post_status" id="" class="form-control">
+            <option value='<?php echo $post_status; ?>'><?php echo $post_status; ?></option>
+
+            <?php
+                if ($post_status == "published") {
+                    echo "
+                        <option value='draft'>Draft</option>
+                        <option value='unpublised'>Unpublished</option>
+                    ";
+                } else if ($post_status == "unpulished") {
+                    echo "
+                        <option value='draft'>Draft</option>
+                        <option value='published'>Published</option>
+                    ";
+                } else {
+                    echo "
+                        <option value='published'>Published</option>
+                        <option value='unpublised'>Unpublished</option>
+                    ";
+                }
+            ?>
+        </select>
     </div>
+
     <div class="form-group">
         <img src="../images/<?php echo $post_image; ?>" alt="<?php echo $post_title; ?>" width="100">
         <input type="file" name="image" class="form-control">
