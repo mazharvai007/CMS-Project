@@ -3,8 +3,34 @@
     // Select Checkboxes
     if (isset($_POST['checkBoxArray'])) {
 
-        foreach ($_POST['checkBoxArray'] as $checkBoxValue) {
-           echo $selectCheckBoxes = $_POST['checkOptions'];
+        foreach ($_POST['checkBoxArray'] as $selectPostValueAsID) {
+           $selectCheckBoxes = $_POST['checkOptions'];
+
+           switch ($selectCheckBoxes) {
+               case 'published':
+                   $query = "UPDATE posts SET post_status = '{$selectCheckBoxes}' WHERE post_id = {$selectPostValueAsID} ";
+                   $update_to_publish = mysqli_query($connect, $query);
+                   confirmQuery($update_to_publish);
+                   break;
+               case 'unpublished':
+                   $query = "UPDATE posts SET post_status = '{$selectCheckBoxes}' WHERE post_id = {$selectPostValueAsID} ";
+                   $update_to_unpublish = mysqli_query($connect, $query);
+                   confirmQuery($update_to_unpublish);
+                   break;
+               case 'draft':
+                   $query = "UPDATE posts SET post_status = '{$selectCheckBoxes}' WHERE post_id = {$selectPostValueAsID} ";
+                   $update_to_draft = mysqli_query($connect, $query);
+                   confirmQuery($update_to_draft);
+                   break;
+               case 'delete':
+                   $query = "DELETE FROM posts WHERE post_id = {$selectPostValueAsID} ";
+                   $update_to_delete = mysqli_query($connect, $query);
+                   confirmQuery($update_to_delete);
+                   break;
+               default:
+                   break;
+
+           }
         }
 
     }
@@ -38,7 +64,7 @@
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th><input id="checkAllBox" type="checkbox"></th>
+                        <th><input id="selectAllBoxes" type="checkbox"></th>
                         <th>ID</th>
                         <th>Author</th>
                         <th>Title</th>
@@ -85,7 +111,7 @@
 
                             echo "<tr>";
                             ?>
-                                <td><input class='checkBoxes' type='checkbox' name='checkBoxArray[]' value='<?php echo $post_id; ?>'></td>
+                                <td><input class='selectAllBoxes' type='checkbox' name='checkBoxArray[]' value='<?php echo $post_id; ?>'></td>
                             <?php
                                 echo "<td>$post_id</td>";
                                 echo "<td>$post_author</td>";
