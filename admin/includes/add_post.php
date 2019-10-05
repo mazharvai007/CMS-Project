@@ -69,7 +69,7 @@
     </div>
     <div class="form-group">
         <label for="content">Content</label>
-        <textarea class="form-control" name="post_content" id="" cols="30" rows="10"></textarea>
+        <textarea class="form-control" name="post_content" id="editor" cols="30" rows="10"></textarea>
     </div>
     <div class="form-group">
         <input type="submit" class="btn btn-primary" name="add_post" value="Add Post">
