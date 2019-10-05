@@ -50,6 +50,15 @@
 
         confirmQuery($update_post);
 
+        echo "
+            <p class='bg-success'>Post updated. 
+                <a href='../post.php?p_id={$the_post_id}'>View Post</a>
+                <span>or</span>
+                <a href='posts.php'>Edit More Posts</a>
+            </p>
+        ";
+
+
     }
 ?>
 
