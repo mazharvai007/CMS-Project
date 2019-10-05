@@ -1,4 +1,4 @@
-$(document).ready(function() {
+jQuery(document).ready(function($) {
     // CKEditor
     ClassicEditor
         .create( document.querySelector( '#editor' ) )
