@@ -69,7 +69,7 @@ include("includes/navigation.php");
 
     <hr>
 
-    <!-- Footer -->
-    <?php
+<!-- Footer -->
+<?php
     include("includes/footer.php");
-    ?>
+?>
