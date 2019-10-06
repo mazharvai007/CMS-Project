@@ -25,9 +25,10 @@
 
                         // Fetch the category from categories table by associative array
                         while ($row = mysqli_fetch_assoc($select_all_categories_query)) {
+                            $cat_id = $row["cat_id"];
                             $cat_title = $row["cat_title"];
 
-                            echo "<li><a href='#'>{$cat_title}</a></li>";
+                            echo "<li><a href='category.php?category=$cat_id'>{$cat_title}</a></li>";
                         }
                     
                     ?>

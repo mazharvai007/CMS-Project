@@ -1,9 +1,9 @@
-jQuery(document).ready(function($) {
+$(document).ready(function() {
     // CKEditor
     ClassicEditor
         .create( document.querySelector( '#editor' ) )
         .catch( error => {
-            // console.error( error );
+            console.error( error );
         } );
 
     // Select all posts
@@ -18,5 +18,5 @@ jQuery(document).ready(function($) {
             });
         }
         e.preventDefault();
-    });
+    })
 });
