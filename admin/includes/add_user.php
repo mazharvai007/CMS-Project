@@ -54,7 +54,7 @@
     </div>
     <div class="form-group">
         <label for="tags">Password</label>
-        <input type="text" name="user_password" class="form-control">
+        <input type="password" name="user_password" class="form-control">
     </div>
     <div class="form-group">
         <input type="submit" class="btn btn-primary" name="add_user" value="Add User">

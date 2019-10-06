@@ -30,10 +30,10 @@ include("includes/navigation.php");
 
                     if ($post_status == 'published') {?>
 
-                    <h1 class="page-header">
-                        Page Heading
-                        <small>Secondary Text</small>
-                    </h1>
+<!--                    <h1 class="page-header">-->
+<!--                        Page Heading-->
+<!--                        <small>Secondary Text</small>-->
+<!--                    </h1>-->
 
                     <!-- First Blog Post -->
                     <h2>
@@ -71,5 +71,5 @@ include("includes/navigation.php");
 
     <!-- Footer -->
     <?php
-    include("includes/footer.php");
+        include("includes/footer.php");
     ?>
