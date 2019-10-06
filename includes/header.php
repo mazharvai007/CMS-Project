@@ -1,6 +1,7 @@
 <?php 
 // Connect DB
-include("includes/db.php"); 
+include("includes/db.php");
+session_start();
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +15,7 @@ include("includes/db.php");
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Blog Home - Start Bootstrap Template</title>
+    <title>CMS Project</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">

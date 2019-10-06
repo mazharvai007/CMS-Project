@@ -39,7 +39,7 @@ include("includes/navigation.php");
 
                     <!-- First Blog Post -->
                     <h2>
-                        <a href="post.php?p_id=<?php echo $the_post_id; ?>"><?php echo $post_title; ?></a>
+                        <?php echo $post_title; ?>
                     </h2>
                     <p class="lead">
                         by <a href="index.php"><?php echo $post_author; ?></a>
@@ -49,7 +49,6 @@ include("includes/navigation.php");
                     <img class="img-responsive" src="images/<?php echo $post_image; ?>" alt="<?php echo $post_title; ?>">
                     <hr>
                     <p><?php echo $post_content; ?></p>
-                    <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
                     <hr>
 
@@ -64,25 +63,29 @@ include("includes/navigation.php");
 
                 // Check the comment form fields
                 if (isset($_POST['create_comment'])) {
+
                     $the_post_id = $_GET['p_id'];
                     $comment_author = $_POST['comment_author'];
                     $comment_email = $_POST['comment_email'];
                     $comment_content = mysqli_escape_string($connect, $_POST['comment_content']);
 
-                    // Getting data from the DB
-                    $query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) VALUES ($the_post_id, '{$comment_author}', '{$comment_email}', '{$comment_content}', 'unapproved', now())";
+                    // Validate the comment form
+                    if (!empty($comment_author) && !empty($comment_email) && !empty($comment_content)) {
+                        // Getting data from the DB
+                        $query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) VALUES ($the_post_id, '{$comment_author}', '{$comment_email}', '{$comment_content}', 'unapproved', now())";
 
-                    $create_comment_query = mysqli_query($connect, $query);
+                        $create_comment_query = mysqli_query($connect, $query);
 
-                    if (!$create_comment_query) {
-                        die("Query Failed!" . mysqli_error($connect));
+                        if (!$create_comment_query) {
+                            die("Query Failed!" . mysqli_error($connect));
+                        }
+
+                        // Increase the comments to each post
+                        $query = "UPDATE posts SET post_comments_count = post_comments_count + 1 WHERE post_id = $the_post_id";
+                        $update_comment_count = mysqli_query($connect, $query) ;
+                    } else {
+                        echo "<script>alert('Fields cannot be empty!')</script>";
                     }
-
-                    // Increase the comments to each post
-                    $query = "UPDATE posts SET post_comments_count = post_comments_count + 1 WHERE post_id = $the_post_id";
-                    $update_comment_count = mysqli_query($connect, $query) ;
-
-
                 }
 
 
