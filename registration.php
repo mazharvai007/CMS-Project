@@ -3,7 +3,8 @@
 include("includes/header.php");
 include("includes/navigation.php");
 
-if (isset($_POST['user_register'])) {
+// User Registration
+if (isset($_POST['submit'])) {
 
     // Catch the register form fields
     $username = $_POST['username'];
@@ -12,30 +13,40 @@ if (isset($_POST['user_register'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Escaping the unknown string
-    $username = mysqli_real_escape_string($connect, $username);
-    $firstName = mysqli_real_escape_string($connect, $firstName);
-    $lastName = mysqli_real_escape_string($connect, $lastName);
-    $email = mysqli_real_escape_string($connect, $email);
-    $password = mysqli_real_escape_string($connect, $password);
+    // Fields validation
+    if (!empty($username) && !empty($firstName) && !empty($lastName) && !empty($email) && !empty($password)) {
 
-    // Access the rand salt column
-    $query = "SELECT user_randSalt FROM users";
-    $select_randSalt_query = mysqli_query($connect, $query);
+        // Escaping the unknown string
+        $username = mysqli_real_escape_string($connect, $username);
+        $firstName = mysqli_real_escape_string($connect, $firstName);
+        $lastName = mysqli_real_escape_string($connect, $lastName);
+        $email = mysqli_real_escape_string($connect, $email);
+        $password = mysqli_real_escape_string($connect, $password);
 
-    if (!$select_randSalt_query) {
-        die("Query Failed!" . mysqli_error($connect));
+        // Access the rand salt column
+        $query = "SELECT user_randSalt FROM users";
+        $select_randSalt_query = mysqli_query($connect, $query);
+
+        if (!$select_randSalt_query) {
+            die("Query Failed!" . mysqli_error($connect));
+        }
+
+        $row = mysqli_fetch_array($select_randSalt_query);
+        $salt = $row['user_randSalt'];
+
+        // Insert register user into the user table
+        $query = "INSERT INTO users (username, user_firstname, user_lastname, user_email, user_password, user_image, user_role) VALUES ('{$username}', '{$firstName}', '{$lastName}', '{$email}', '{$password}', '', 'subscriber' )";
+        $register_user_query = mysqli_query($connect, $query);
+        if (!$register_user_query) {
+            die("Query Failed!" . mysqli_error($connect));
+        }
+
+        $message = "<p class='alert-success text-center'>Registration has been submitted!</p>";
+    } else {
+        $message = "<p class='alert-danger text-center'>All fields are required!</p>";
     }
-
-    $row = mysqli_fetch_array($select_randSalt_query);
-    $salt = $row['user_randSalt'];
-
-    // Insert register user into the user table
-    $query = "INSERT INTO users (username, user_firstname, user_lastname, user_email, user_password, user_image, user_role) VALUES ('{$username}', '{$firstName}', '{$lastName}', '{$email}', '{$password}', '', 'subscriber' )";
-    $register_user_query = mysqli_query($connect, $query);
-    if (!$register_user_query) {
-        die("Query Failed!" . mysqli_error($connect));
-    }
+} else {
+    $message = "";
 }
 
 ?>
@@ -51,6 +62,7 @@ if (isset($_POST['user_register'])) {
                     <div class="form-wrap">
                     <h1>Register</h1>
                         <form role="form" action="registration.php" method="post" id="login-form" autocomplete="off">
+                            <?php echo $message; ?>
                             <div class="form-group">
                                 <label for="username" class="sr-only">username</label>
                                 <input type="text" name="username" id="username" class="form-control" placeholder="Enter Username">
@@ -72,7 +84,7 @@ if (isset($_POST['user_register'])) {
                                 <input type="password" name="password" id="key" class="form-control" placeholder="Password">
                             </div>
 
-                            <input type="submit" name="user_register" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Register">
+                            <input type="submit" name="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Register">
                         </form>
 
                     </div>
