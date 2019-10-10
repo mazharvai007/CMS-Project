@@ -44,16 +44,29 @@ if (isset($_POST['edit_user'])) {
             }
         }
 
-        $query = "UPDATE users SET user_firstname = '{$user_firstname}', user_lastname = '{$user_lastname}', username = '{$username}', user_password = '{$user_password}', user_email = '{$user_email}', user_image = '{$user_image}', user_role = '{$user_role}' WHERE user_id = {$the_user_id}";
+        $username = $_POST["username"];
+        $user_email = $_POST["user_email"];
+        $user_password = $_POST["user_password"];
+
+        // Encrypt update password
+        $query = "SELECT user_randSalt from users";
+        $select_randsalt_query = mysqli_query($connect, $query);
+
+        if (!$select_randsalt_query) {
+            die("Query Failed! " . mysqli_error($connect));
+        }
+
+        $updatePassword = mysqli_fetch_array($select_randsalt_query);
+        $salt = $updatePassword['user_randSalt'];
+        $hashed_password = crypt($user_password, $salt);
+
+        // Update database
+        $query = "UPDATE users SET user_firstname = '{$user_firstname}', user_lastname = '{$user_lastname}', username = '{$username}', user_password = '{$hashed_password}', user_email = '{$user_email}', user_image = '{$user_image}', user_role = '{$user_role}' WHERE user_id = {$the_user_id}";
 
         $update_user = mysqli_query($connect, $query);
 
         confirmQuery($update_user);
-
-        $username = $_POST["username"];
-        $user_email = $_POST["user_email"];
-        $user_password = $_POST["user_password"];
-    }
+}
 ?>
 <form action="" method="post" enctype="multipart/form-data">
     <div class="form-group">
