@@ -72,6 +72,7 @@
         }        
     }
 
+    // Delete Post
     function delete_post() {
         // Connect with DB globally inside each function
         global $connect;
@@ -80,6 +81,28 @@
             $delete_post_id = $_GET['delete'];
             $query = "DELETE FROM posts WHERE post_id = {$delete_post_id}";
             $delete_post = mysqli_query($connect, $query);
+
+            header("Location: posts.php");
+        }
+    }
+
+    // Reset visitors
+    function reset_visitors() {
+        global $connect;
+
+        // Reset Visitors
+//        if (isset($_GET['reset'])) {
+//            $reset_post_id = $_GET['reset'];
+//            $reset_query = "UPDATE posts SET post_views_count = 0 WHERE post_id = {$reset_post_id}";
+//            mysqli_query($connect, $reset_query);
+//
+//            header("Location: posts.php");
+//        }
+
+        if (isset($_GET['reset'])) {
+            $reset_post_id = $_GET['reset'];
+            $reset_query = "UPDATE posts SET post_views_count = 0 WHERE post_id =" . mysqli_real_escape_string($connect, $reset_post_id) . " ";
+            mysqli_query($connect, $reset_query);
 
             header("Location: posts.php");
         }
