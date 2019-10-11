@@ -16,9 +16,12 @@ include("includes/navigation.php");
 
             <?php
 
+                // Post count query
                 $post_query_count = "SELECT * FROM posts";
                 $find_count = mysqli_query($connect, $post_query_count);
                 $count = mysqli_num_rows($find_count);
+
+                $count = ceil($count / 2);
 
                 $post_query = "SELECT * FROM posts";
                 $select_all_posts_query = mysqli_query($connect, $post_query);
@@ -34,6 +37,7 @@ include("includes/navigation.php");
 
                     if ($post_status == 'published') {?>
 
+                    <h1><?php echo $count; ?></h1>
                     <!-- First Blog Post -->
                     <h2>
                         <a href="post.php?p_id=<?php echo $post_id; ?>"><?php echo $post_title; ?></a>
@@ -67,6 +71,20 @@ include("includes/navigation.php");
     <!-- /.row -->
 
     <hr>
+
+    <div class="pagination-area">
+        <nav aria-label="Page navigation" class="text-center">
+            <ul class="pagination">
+
+                <?php
+                    for ($i = 1; $i <= $count; $i++) {
+                        echo "<li><a href='index.php?page={$i}'>{$i}</a></li>";
+                    }
+                ?>
+
+            </ul>
+        </nav>
+    </div>
 
 <!-- Footer -->
 <?php
