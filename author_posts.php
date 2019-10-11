@@ -20,6 +20,14 @@ include("includes/navigation.php");
                     $the_post_id = $_GET['p_id'];
                     $the_post_author = $_GET['author'];
                 }
+            ?>
+
+                <h1 class="page-header">
+                    <?php echo $the_post_author; ?>'s
+                    <small>Posts</small>
+                </h1>
+
+            <?php
 
                 $query = "SELECT * FROM posts WHERE post_author = '{$the_post_author}' ";
                 $select_all_posts_query = mysqli_query($connect, $query);
@@ -32,11 +40,6 @@ include("includes/navigation.php");
                     $post_content = $posts["post_content"];
 
                     ?>
-
-                    <h1 class="page-header">
-                        <?php echo $post_author; ?>'s
-                        <small>Posts</small>
-                    </h1>
 
                     <!-- Author Post -->
                     <h2>
