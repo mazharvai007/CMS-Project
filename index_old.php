@@ -16,32 +16,10 @@ include("includes/navigation.php");
 
             <?php
 
-                $show_post = 3;
+                $query = "SELECT * FROM posts ";
+                $select_all_posts_query = mysqli_query($connect, $query);
 
-                if (isset($_GET['page'])) {
-
-                    $page = $_GET['page'];
-                } else {
-                    $page = "";
-                }
-
-                if ($page == "" || $page == 1) {
-                    $page_1 = 0;
-                } else {
-                    $page_1 = ($page * $show_post) - $show_post;
-                }
-
-            // Post count query
-            $post_query_count = "SELECT * FROM posts WHERE post_status = 'published' ";
-            $find_count = mysqli_query($connect, $post_query_count);
-            $count = mysqli_num_rows($find_count);
-
-            $count = ceil($count / $show_post);
-
-            $post_query = "SELECT * FROM posts WHERE post_status = 'published' LIMIT $page_1, $show_post";
-            $select_all_posts_query = mysqli_query($connect, $post_query);
-
-            while ($posts = mysqli_fetch_assoc($select_all_posts_query)) {
+                while ($posts = mysqli_fetch_assoc($select_all_posts_query)) {
                     $post_id = $posts["post_id"];
                     $post_title = $posts["post_title"];
                     $post_author = $posts["post_author"];
@@ -51,6 +29,11 @@ include("includes/navigation.php");
                     $post_status = $posts["post_status"];
 
                     if ($post_status == 'published') {?>
+
+                    <h1 class="page-header">
+                        Page Heading
+                        <small>Secondary Text</small>
+                    </h1>
 
                     <!-- First Blog Post -->
                     <h2>
@@ -74,6 +57,8 @@ include("includes/navigation.php");
                 }
             ?>
 
+
+
         </div>
 
         <!-- Siderbar -->
@@ -83,24 +68,6 @@ include("includes/navigation.php");
     <!-- /.row -->
 
     <hr>
-
-    <div class="pagination-area">
-        <nav aria-label="Page navigation" class="text-center">
-            <ul class="pagination">
-
-                <?php
-                    for ($i = 1; $i <= $count; $i++) {
-                        if ($i == $page) {
-                            echo "<li class='active'><a href='index.php?page={$i}'>{$i}</a></li>";
-                        } else {
-                            echo "<li><a href='index.php?page={$i}'>{$i}</a></li>";
-                        }
-                    }
-                ?>
-
-            </ul>
-        </nav>
-    </div>
 
 <!-- Footer -->
 <?php
