@@ -12,6 +12,7 @@
     </div>
     <!-- Top Menu Items -->
     <ul class="nav navbar-right top-nav">
+        <li class="users-online">Users Online: <?php echo users_online(); ?></li>
         <li><a href="../" target="_blank">Preview</a></li>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
