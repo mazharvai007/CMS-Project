@@ -27,3 +27,13 @@ $(document).ready(function() {
     //     $(this).remove();
     // });
 });
+
+// Users Online
+function loadUsersOnline() {
+    $.get("functions.php?usersOnline=result", function (data) {
+        $(".online-user").text(data);
+    });
+}
+setInterval(function () {
+    loadUsersOnline();
+}, 500);
