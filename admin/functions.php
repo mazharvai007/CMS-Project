@@ -110,23 +110,34 @@
 
     // Users online
     function users_online() {
-        global $connect;
 
-        $session = session_id();
-        $time = time();
-        $time_out_in_seconds = 30;
-        $time_out = $time - $time_out_in_seconds;
+        if (isset($_GET['usersOnline'])) {
 
-        $session_query = "SELECT * FROM users_online WHERE session = '$session' ";
-        $send_session_query = mysqli_query($connect, $session_query);
-        $online_user_count = mysqli_num_rows($send_session_query);
+            global $connect;
 
-        if ($online_user_count == NULL) {
-            mysqli_query($connect, "INSERT INTO users_online(session, time) VALUES ('$session', $time)");
-        } else {
-            mysqli_query($connect, "UPDATE users_online SET time = '$time' WHERE session = '$session'");
+            if (!$connect) {
+                session_start();
+                include ("../includes/db.php");
+
+                $session = session_id();
+                $time = time();
+                $time_out_in_seconds = 30;
+                $time_out = $time - $time_out_in_seconds;
+
+                $session_query = "SELECT * FROM users_online WHERE session = '$session' ";
+                $send_session_query = mysqli_query($connect, $session_query);
+                $online_user_count = mysqli_num_rows($send_session_query);
+
+                if ($online_user_count == NULL) {
+                    mysqli_query($connect, "INSERT INTO users_online(session, time) VALUES ('$session', $time)");
+                } else {
+                    mysqli_query($connect, "UPDATE users_online SET time = '$time' WHERE session = '$session'");
+                }
+
+                $online_users_query = mysqli_query($connect, "SELECT * FROM users_online WHERE time > '$time_out'");
+                echo $user_count = mysqli_num_rows($online_users_query);
+            }
         }
-        $online_users_query = mysqli_query($connect, "SELECT * FROM users_online WHERE time > '$time_out'");
-        return $user_count = mysqli_num_rows($online_users_query);
     }
+    users_online();
 ?>
