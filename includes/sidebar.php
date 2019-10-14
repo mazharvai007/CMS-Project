@@ -20,7 +20,7 @@
                 <div class="well">
                     <?php
                     if (isset($_SESSION['username'])) {
-                        echo $_SESSION['firstname'] . " " . $_SESSION['lastname'];
+                        echo "You are logged in " . $_SESSION['firstname'] . " " . $_SESSION['lastname'];
                     } else { ?>
                         <h4>Login</h4>
                         <form action="includes/login.php" method="post">
