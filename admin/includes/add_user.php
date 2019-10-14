@@ -14,6 +14,9 @@
         $user_email = $_POST["user_email"];
         $user_password = $_POST["user_password"];
 
+        // Password HASH
+        $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 15));
+
         $query = "INSERT INTO users(user_firstname, user_lastname, user_role, user_image, username, user_email, user_password) VALUES('{$user_firstname}', '{$user_lastname}', '{$user_role}', '{$user_image}', '{$username}', '{$user_email}', '{$user_password}')";
 
         $create_user_query = mysqli_query($connect, $query);
@@ -54,7 +57,7 @@
     </div>
     <div class="form-group">
         <label for="tags">Password</label>
-        <input type="text" name="user_password" class="form-control">
+        <input type="password" name="user_password" class="form-control">
     </div>
     <div class="form-group">
         <input type="submit" class="btn btn-primary" name="add_user" value="Add User">

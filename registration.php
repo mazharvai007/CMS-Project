@@ -19,6 +19,7 @@ if (isset($_POST['submit'])) {
         $email = mysqli_real_escape_string($connect, $email);
         $password = mysqli_real_escape_string($connect, $password);
 
+        // Password HASH
         $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 15));
 
         // Access the rand salt column
