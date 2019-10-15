@@ -64,7 +64,27 @@
     </div>
     <div class="form-group">
         <label for="author">Author</label>
-        <input type="text" class="form-control" name="author">
+<!--        <input type="text" class="form-control" name="author">-->
+        <select name="post_author" id="" class="form-control">
+            <?php
+            // Select all data from categories
+            $users_query = "SELECT * FROM users";
+            // Connect data for getting data from categories
+            $select_users = mysqli_query($connect, $users_query);
+
+            confirmQuery($select_users);
+
+            // Fetch the category from categories table by associative array
+            while ($row = mysqli_fetch_assoc($select_users)) {
+                $user_id = $row["user_id"];
+                $username = $row['username'];
+
+                echo "
+                        <option value='{$user_id}'>{$username}</option>
+                    ";
+            }
+            ?>
+        </select>
     </div>
     <div class="form-group">
         <label for="status">Status</label>
