@@ -92,10 +92,14 @@ if (isset($_GET['unapproved'])) {
     header("Location: users.php");
 }
 if (isset($_GET['delete'])) {
-    $delete_user_id = $_GET['delete'];
-    $query = "DELETE FROM users WHERE user_id = {$delete_user_id}";
-    $delete_user = mysqli_query($connect, $query);
+    if (isset($_SESSION['user_role'])) {
+        if ($_SESSION['user_role'] == 'admin') {
+            $delete_user_id = mysqli_real_escape_string($connect, $_GET['delete']);
+            $query = "DELETE FROM users WHERE user_id = {$delete_user_id}";
+            $delete_user = mysqli_query($connect, $query);
 
-    header("Location: users.php");
+            header("Location: users.php");
+        }
+    }
 }
 ?>
