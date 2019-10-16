@@ -45,6 +45,7 @@ include("includes/navigation.php");
                     $post_id = $posts["post_id"];
                     $post_title = $posts["post_title"];
                     $post_author = $posts["post_author"];
+                    $post_user = $posts["post_user"];
                     $post_date = $posts["post_date"];
                     $post_image = $posts["post_image"];
                     $post_content = substr($posts["post_content"], 0, 300);
@@ -57,7 +58,7 @@ include("includes/navigation.php");
                         <a href="post.php?p_id=<?php echo $post_id; ?>"><?php echo $post_title; ?></a>
                     </h2>
                     <p class="lead">
-                        by <a href="author_posts.php?author=<?php echo $post_author; ?>&p_id=<?php echo $post_id; ?>"><?php echo $post_author; ?></a>
+                        by <a href="author_posts.php?author=<?php echo $post_user; ?>&p_id=<?php echo $post_id; ?>"><?php echo $post_user; ?></a>
                     </p>
                     <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date; ?></p>
                     <hr>

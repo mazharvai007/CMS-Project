@@ -29,12 +29,12 @@ include("includes/navigation.php");
 
             <?php
 
-                $query = "SELECT * FROM posts WHERE post_author = '{$the_post_author}' ";
+                $query = "SELECT * FROM posts WHERE post_user = '{$the_post_author}' ";
                 $select_all_posts_query = mysqli_query($connect, $query);
 
                 while ($posts = mysqli_fetch_assoc($select_all_posts_query)) {
                     $post_title = $posts["post_title"];
-                    $post_author = $posts["post_author"];
+                    $post_author = $posts["post_user"];
                     $post_date = $posts["post_date"];
                     $post_image = $posts["post_image"];
                     $post_content = $posts["post_content"];
