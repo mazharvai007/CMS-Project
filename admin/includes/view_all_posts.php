@@ -1,5 +1,7 @@
 <?php
 
+    include ("delete_post.php");
+
     // Select Checkboxes
     if (isset($_POST['checkBoxArray'])) {
 
@@ -77,7 +79,7 @@
 
 <form action="" method="post">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12 nopadding">
             <div class="bulkOptionsContainer">
                 <div class="col-lg-3">
                     <select name="checkOptions" id="" class="form-control">
@@ -188,7 +190,8 @@
                                 echo "<td>$post_views_count</td>";
                                 echo "<td><a onClick=\"javascript: return confirm('Are you sure, you want to reset the post views?')\" href='posts.php?reset=$post_id'>Reset</a></td>";
                                 echo "<td><a onClick=\"javascript: return confirm('Are you sure, you want to edit the post?')\" href='posts.php?source=edit_post&p_id=$post_id'>Edit</a></td>";
-                                echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete?');\" href='posts.php?delete=$post_id'>Delete</a></td>";
+//                                echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete?');\" href='posts.php?delete=$post_id'>Delete</a></td>";
+                                echo "<td><a class='post-delete-btn' href='javascript:void(0)' rel='$post_id'>Delete</a></td>";
                                 echo "</tr>";
                         }
                     ?>
@@ -201,3 +204,16 @@
     reset_visitors();
     delete_post();
 ?>
+
+<script src="js/jquery.js"></script>
+<script>
+    $(document).ready(function() {
+        $(".post-delete-btn").on("click", function () {
+            var post_id = $(this).attr("rel");
+            var post_delete = "posts.php?delete=" + post_id +" ";
+
+            $(".delete-post-modal").attr("href", post_delete);
+            $("#deleteModalPost").modal('show');
+        });
+    });
+</script>
