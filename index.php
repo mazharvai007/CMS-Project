@@ -1,4 +1,5 @@
 <?php
+ob_start();
 // Header and Navigation
 include("includes/header.php");
 include("includes/navigation.php");
@@ -31,33 +32,44 @@ include("includes/navigation.php");
                     $page_1 = ($page * $show_post) - $show_post;
                 }
 
+                if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin') {
+                    $post_query_count = "SELECT * FROM posts";
+                } else {
+                    $post_query_count = "SELECT * FROM posts WHERE post_status = 'published' ";
+                }
+
             // Post count query
-            $post_query_count = "SELECT * FROM posts WHERE post_status = 'published' ";
             $find_count = mysqli_query($connect, $post_query_count);
             $count = mysqli_num_rows($find_count);
 
+            if ($count < 1) {
+                echo "<h1 class='text-center'>No Post available!</h1>";
+            } else {
+
             $count = ceil($count / $show_post);
 
-            $post_query = "SELECT * FROM posts WHERE post_status = 'published' LIMIT $page_1, $show_post";
+            $post_query = "SELECT * FROM posts LIMIT $page_1, $show_post";
             $select_all_posts_query = mysqli_query($connect, $post_query);
 
             while ($posts = mysqli_fetch_assoc($select_all_posts_query)) {
                     $post_id = $posts["post_id"];
                     $post_title = $posts["post_title"];
                     $post_author = $posts["post_author"];
+                    $post_user = $posts["post_user"];
                     $post_date = $posts["post_date"];
                     $post_image = $posts["post_image"];
                     $post_content = substr($posts["post_content"], 0, 300);
                     $post_status = $posts["post_status"];
 
-                    if ($post_status == 'published') {?>
+
+                    ?>
 
                     <!-- First Blog Post -->
                     <h2>
                         <a href="post.php?p_id=<?php echo $post_id; ?>"><?php echo $post_title; ?></a>
                     </h2>
                     <p class="lead">
-                        by <a href="author_posts.php?author=<?php echo $post_author; ?>&p_id=<?php echo $post_id; ?>"><?php echo $post_author; ?></a>
+                        by <a href="author_posts.php?author=<?php echo $post_user; ?>&p_id=<?php echo $post_id; ?>"><?php echo $post_user; ?></a>
                     </p>
                     <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date; ?></p>
                     <hr>

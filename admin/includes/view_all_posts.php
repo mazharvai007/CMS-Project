@@ -1,5 +1,7 @@
 <?php
 
+    include ("delete_post.php");
+
     // Select Checkboxes
     if (isset($_POST['checkBoxArray'])) {
 
@@ -77,7 +79,7 @@
 
 <form action="" method="post">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12 nopadding">
             <div class="bulkOptionsContainer">
                 <div class="col-lg-3">
                     <select name="checkOptions" id="" class="form-control">
@@ -105,6 +107,7 @@
                         <th><input id="selectAllBoxes" type="checkbox"></th>
                         <th>ID</th>
                         <th>Author</th>
+                        <th>User</th>
                         <th>Title</th>
                         <th>Category</th>
                         <th>Status</th>
@@ -131,6 +134,7 @@
                         while ($row = mysqli_fetch_assoc($get_posts)) {
                             $post_id = $row["post_id"];
                             $post_author = $row["post_author"];
+                            $post_user = $row["post_user"];
                             $post_title = $row["post_title"];
                             $post_category = $row["post_category_id"];
                             $post_status = $row["post_status"];
@@ -156,19 +160,38 @@
                                 <td><input class='selectAllBoxes' type='checkbox' name='checkBoxArray[]' value='<?php echo $post_id; ?>'></td>
                             <?php
                                 echo "<td>$post_id</td>";
+
+
+//                                if (isset($post_author) || !empty($post_author)) {
+//                                    echo "<td>$post_author</td>";
+//                                } else if (isset($post_user) || !empty($post_user)) {
+//                                    echo "<td>$post_user</td>";
+//                                }
+
                                 echo "<td>$post_author</td>";
+                                echo "<td>$post_user</td>";
+
                                 echo "<td>$post_title</td>";
                                 echo "<td>$cat_title</td>";
                                 echo "<td>$post_status</td>";
                                 echo "<td><img src='../images/$post_image' width='100' alt='$post_title' class='img-responsive'></td>";
                                 echo "<td>$post_tags</td>";
-                                echo "<td>$post_comments_count</td>";
+
+                                $comment_query = "SELECT * FROM comments WHERE comment_post_id = $post_id";
+                                $send_comment_query = mysqli_query($connect, $comment_query);
+                                $comment_row = mysqli_fetch_array($send_comment_query);
+                                $comment_id = $comment_row['comment_id'];
+                                $count_comment = mysqli_num_rows($send_comment_query);
+
+//                                echo "<td>$post_comments_count</td>";
+                                echo "<td><a href='post_comments.php?id=$post_id'>$count_comment</a></td>";
                                 echo "<td>$post_date</td>";
                                 echo "<td><a href='../post.php?p_id=$post_id'>Preview</a></td>";
                                 echo "<td>$post_views_count</td>";
                                 echo "<td><a onClick=\"javascript: return confirm('Are you sure, you want to reset the post views?')\" href='posts.php?reset=$post_id'>Reset</a></td>";
                                 echo "<td><a onClick=\"javascript: return confirm('Are you sure, you want to edit the post?')\" href='posts.php?source=edit_post&p_id=$post_id'>Edit</a></td>";
-                                echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete?');\" href='posts.php?delete=$post_id'>Delete</a></td>";
+//                                echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete?');\" href='posts.php?delete=$post_id'>Delete</a></td>";
+                                echo "<td><a class='post-delete-btn' href='javascript:void(0)' rel='$post_id'>Delete</a></td>";
                                 echo "</tr>";
                         }
                     ?>
@@ -181,3 +204,16 @@
     reset_visitors();
     delete_post();
 ?>
+
+<script src="js/jquery.js"></script>
+<script>
+    $(document).ready(function() {
+        $(".post-delete-btn").on("click", function () {
+            var post_id = $(this).attr("rel");
+            var post_delete = "posts.php?delete=" + post_id +" ";
+
+            $(".delete-post-modal").attr("href", post_delete);
+            $("#deleteModalPost").modal('show');
+        });
+    });
+</script>

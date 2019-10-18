@@ -1,11 +1,11 @@
-<?php 
+<?php
+    ob_start();
     // Connect DB
     include("../includes/db.php");
     
     // Connect functions.php file
     include("functions.php");
-    
-    ob_start();
+
     session_start();
 
     if (!isset($_SESSION['user_role'])) {
