@@ -40,8 +40,6 @@ include("includes/navigation.php");
                 echo "<h1 class='text-center'>No Post available!</h1>";
             } else {
 
-
-
             $count = ceil($count / $show_post);
 
             $post_query = "SELECT * FROM posts WHERE post_status = 'published' LIMIT $page_1, $show_post";
