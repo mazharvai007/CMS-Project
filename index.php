@@ -36,6 +36,12 @@ include("includes/navigation.php");
             $find_count = mysqli_query($connect, $post_query_count);
             $count = mysqli_num_rows($find_count);
 
+            if ($count < 1) {
+                echo "<h1 class='text-center'>No Post available!</h1>";
+            } else {
+
+
+
             $count = ceil($count / $show_post);
 
             $post_query = "SELECT * FROM posts WHERE post_status = 'published' LIMIT $page_1, $show_post";
@@ -51,7 +57,8 @@ include("includes/navigation.php");
                     $post_content = substr($posts["post_content"], 0, 300);
                     $post_status = $posts["post_status"];
 
-                    if ($post_status == 'published') {?>
+
+                    ?>
 
                     <!-- First Blog Post -->
                     <h2>
