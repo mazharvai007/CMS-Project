@@ -1,4 +1,5 @@
 <?php
+ob_start();
 // Header and Navigation
 include("includes/header.php");
 include("includes/navigation.php");
@@ -31,8 +32,13 @@ include("includes/navigation.php");
                     $page_1 = ($page * $show_post) - $show_post;
                 }
 
+                if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin') {
+                    $post_query_count = "SELECT * FROM posts";
+                } else {
+                    $post_query_count = "SELECT * FROM posts WHERE post_status = 'published' ";
+                }
+
             // Post count query
-            $post_query_count = "SELECT * FROM posts WHERE post_status = 'published' ";
             $find_count = mysqli_query($connect, $post_query_count);
             $count = mysqli_num_rows($find_count);
 
@@ -42,7 +48,7 @@ include("includes/navigation.php");
 
             $count = ceil($count / $show_post);
 
-            $post_query = "SELECT * FROM posts WHERE post_status = 'published' LIMIT $page_1, $show_post";
+            $post_query = "SELECT * FROM posts LIMIT $page_1, $show_post";
             $select_all_posts_query = mysqli_query($connect, $post_query);
 
             while ($posts = mysqli_fetch_assoc($select_all_posts_query)) {
