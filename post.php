@@ -4,8 +4,6 @@ include("includes/header.php");
 include("includes/navigation.php");
 ?>
 
-
-
     <!-- Page Content -->
     <div class="container">
 
@@ -28,8 +26,17 @@ include("includes/navigation.php");
                         die("Query Failed! " . mysqli_error($connect));
                     }
 
-                    $query = "SELECT * FROM posts WHERE post_id = $the_post_id ";
+                    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin') {
+                        $query = "SELECT * FROM posts WHERE post_id = $the_post_id ";
+                    } else {
+                        $query = "SELECT * FROM posts WHERE post_id = $the_post_id AND post_status == 'published' ";
+                    }
+
                     $select_all_posts_query = mysqli_query($connect, $query);
+
+                    if (mysqli_num_rows($select_all_posts_query) < 1 ) {
+                        echo "<h1 class='text-center'>No Post available!</h1>";
+                    } else {
 
                     while ($posts = mysqli_fetch_assoc($select_all_posts_query)) {
                         $post_title = $posts["post_title"];
@@ -39,7 +46,6 @@ include("includes/navigation.php");
                         $post_content = $posts["post_content"];
 
                         ?>
-
 
                         <!-- First Blog Post -->
                         <h2>
@@ -59,9 +65,6 @@ include("includes/navigation.php");
                         <hr>
 
                     <?php }
-                } else {
-                    header("Location: index.php");
-                }
 
             ?>
 
@@ -154,7 +157,10 @@ include("includes/navigation.php");
                         </div>
                     </div>
 
-                <?php }
+                <?php } }
+                } else {
+                    header("Location: index.php");
+                }
             ?>
         </div>
 
