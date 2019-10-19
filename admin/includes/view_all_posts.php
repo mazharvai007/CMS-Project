@@ -26,20 +26,26 @@
                    break;
                case 'duplicate':
                    // Detailed way
-//                   $query = "SELECT * FROM posts WHERE post_id = {$selectPostValueAsID} ";
-//                   $select_duplicate_post_query = mysqli_query($connect, $query);
+                   $query = "SELECT * FROM posts WHERE post_id = {$selectPostValueAsID} ";
+                   $select_duplicate_post_query = mysqli_query($connect, $query);
 //
                    // Fetch the query
-//                   while ($row = mysqli_fetch_array($select_duplicate_post_query)) {
-//                       $post_title = $row['post_title'];
-//                       $post_category_id = $row['post_category_id'];
-//                       $post_date = $row['post_date'];
-//                       $post_author = $row['post_author'];
-//                       $post_status = $row['post_status'];
-//                       $post_image = $row['post_image'];
-//                       $post_tags = $row['post_tags'];
-//                       $post_content = $row['post_content'];
-//                   }
+                   while ($row = mysqli_fetch_array($select_duplicate_post_query)) {
+                       $post_title = $row['post_title'];
+                       $post_category_id = $row['post_category_id'];
+                       $post_date = $row['post_date'];
+                       $post_author = $row['post_author'];
+                       $post_user = $row['post_user'];
+                       $post_status = $row['post_status'];
+                       $post_image = $row['post_image'];
+                       $post_tags = $row['post_tags'];
+                       $post_content = $row['post_content'];
+                       $post_views_count = $row['post_views_count'];
+
+//                       if (empty($post_tags)) {
+//                           $post_tags = "No tags";
+//                       }
+                   }
 //
                    // Insert duplicate post into db
 //                   $query = "INSERT INTO posts(post_category_id, post_title, post_author, post_date, post_image, post_content, post_tags, post_status) VALUES({$post_category_id}, '{$post_title}', '{$post_author}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_status}')";
@@ -53,8 +59,8 @@
 //                   confirmQuery($copy_the_post_query);
 
                    // Alternate way
-                   $query = "INSERT INTO posts (post_tags, post_status, post_category_id, post_title, post_author, post_date ,post_image, post_content )";
-                   $query .= "SELECT post_tags, post_status, post_category_id, post_title, post_author, now() ,post_image, post_content FROM posts WHERE post_id='{$selectPostValueAsID}'";
+                   $query = "INSERT INTO posts (post_tags, post_status, post_category_id, post_title, post_author, post_user, post_date ,post_image, post_content, post_views_count )";
+                   $query .= "SELECT post_tags, post_status, post_category_id, post_title, post_author, post_user, now() ,post_image, post_content, post_views_count FROM posts WHERE post_id='{$selectPostValueAsID}'";
                    $alt_copy_the_post_query = mysqli_query($connect, $query);
 
                    confirmQuery($alt_copy_the_post_query);
