@@ -173,4 +173,21 @@
 
         return $result;
     }
+
+    // Is admin?
+    function is_admin($username = '') {
+        global $connect;
+
+        $user_query = "SELECT user_role FROM users WHERE username = '$username' ";
+        $result = mysqli_query($connect, $user_query);
+        confirmQuery($result);
+
+        $row = mysqli_fetch_array($result);
+
+        if ($row['user_role'] == 'admin') {
+            return true;
+        } else {
+            return false;
+        }
+    }
 ?>

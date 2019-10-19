@@ -3,6 +3,10 @@
 include("includes/admin_header.php");
 // For navigation
 include("includes/admin_navigation.php");
+
+if (!is_admin($_SESSION['username'])) {
+    header("Loation: index.php");
+}
 ?>
 
 <div id="page-wrapper">
