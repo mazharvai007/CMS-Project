@@ -147,4 +147,16 @@
         }
     }
     users_online();
+
+    function recordCount($table) {
+        global $connect;
+
+        $post_query = "SELECT * FROM . $table";
+        $select_all_post = mysqli_query($connect, $post_query);
+        $result = mysqli_num_rows($select_all_post);
+
+        confirmQuery($result);
+
+        return $result;
+    }
 ?>
