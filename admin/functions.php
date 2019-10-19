@@ -148,12 +148,26 @@
     }
     users_online();
 
+    // Record count of dashboard
     function recordCount($table) {
         global $connect;
 
         $post_query = "SELECT * FROM . $table";
         $select_all_post = mysqli_query($connect, $post_query);
         $result = mysqli_num_rows($select_all_post);
+
+        confirmQuery($result);
+
+        return $result;
+    }
+
+    // Check post, comments, and users
+    function checkStatus($table, $column, $status) {
+        global $connect;
+
+        $checkStatus_query = "SELECT * FROM $table WHERE $column = '$status' ";
+        $select_all_pub_post = mysqli_query($connect, $checkStatus_query);
+        $result = mysqli_num_rows($select_all_pub_post);
 
         confirmQuery($result);
 
