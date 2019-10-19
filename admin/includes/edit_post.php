@@ -88,9 +88,11 @@
                     $cat_id = $row["cat_id"];
                     $cat_title = $row['cat_title'];
 
-                    echo "
-                        <option value='{$cat_id}'>{$cat_title}</option>
-                    ";
+                    if ($cat_id == $post_category) {
+                        echo "<option selected value='{$cat_id}'>{$cat_title}</option>";
+                    } else {
+                        echo "<option value='{$cat_id}'>{$cat_title}</option>";
+                    }
                 }
             ?>
         </select>
@@ -151,7 +153,7 @@
     </div>
 
     <div class="form-group">
-        <label for="">Post Staus</label>
+        <label for="">Post Status</label>
         <select name="post_status" id="" class="form-control">
             <option value='<?php echo $post_status; ?>'><?php echo $post_status; ?></option>
 
