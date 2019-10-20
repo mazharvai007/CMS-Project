@@ -229,5 +229,35 @@
     // Register Usr
     function register_user($username, $email, $password) {
         global $connect;
+
+        if (checkUsername($username)) {
+            $message = "<p class='alert-danger text-center'>The username is exists!</p>";
+        } elseif (checkEmail($email)) {
+            $message = "<p class='alert-danger text-center'>The email is exists!</p>";
+        }
+
+        // Fields validation
+        elseif (!empty($username) && !empty($email) && !empty($password)) {
+
+            // Escaping the unknown string
+            $username = mysqli_real_escape_string($connect, $username);
+            $email = mysqli_real_escape_string($connect, $email);
+            $password = mysqli_real_escape_string($connect, $password);
+
+            // Password HASH
+            $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 15));
+
+            // Access the rand salt column
+
+            // Insert register user into the user table
+            $query = "INSERT INTO users (username, user_email, user_password, user_role) VALUES ('{$username}', '{$email}', '{$password}', 'subscriber' )";
+            $register_user_query = mysqli_query($connect, $query);
+
+            confirmQuery($register_user_query);
+
+            $message = "<p class='alert-success text-center'>Registration has been submitted!</p>";
+        } else {
+            $message = "<p class='alert-danger text-center'>All fields are required!</p>";
+        }
     }
 ?>

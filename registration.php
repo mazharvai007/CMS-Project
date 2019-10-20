@@ -6,40 +6,46 @@ include("includes/navigation.php");
 // User Registration
 if (isset($_POST['submit'])) {
 
-    // Catch the register form fields
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    // Validate the fields
+    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
 
-    if (checkUsername($username)) {
-        $message = "<p class='alert-danger text-center'>The username is exists!</p>";
-    } elseif (checkEmail($email)) {
-        $message = "<p class='alert-danger text-center'>The email is exists!</p>";
+    $error = [
+        'username' => '',
+        'email' => '',
+        'password' => ''
+    ];
+
+    // Validate username field
+    if (strlen($username) < 4) {
+        $error['username'] = 'Username required at least 4 character.';
     }
 
-    // Fields validation
-     elseif (!empty($username) && !empty($email) && !empty($password)) {
+    if ($username == '') {
+        $error['username'] = 'Username can not be empty!';
+    }
 
-        // Escaping the unknown string
-        $username = mysqli_real_escape_string($connect, $username);
-        $email = mysqli_real_escape_string($connect, $email);
-        $password = mysqli_real_escape_string($connect, $password);
+    if (checkUsername($username)) {
+        $error['username'] = 'Username already exists, pick another one!';
+    }
 
-        // Password HASH
-        $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 15));
+    // Validate email field
+    if ($email == '') {
+        $error['email'] = 'Email field can not be empty!';
+    }
 
-        // Access the rand salt column
+    if (checkEmail($email)) {
+        $error['email'] = 'Email already exists, pick another one! or <a href="index.php">Please Login</a>';
+    }
 
-        // Insert register user into the user table
-        $query = "INSERT INTO users (username, user_email, user_password, user_role) VALUES ('{$username}', '{$email}', '{$password}', 'subscriber' )";
-        $register_user_query = mysqli_query($connect, $query);
-        if (!$register_user_query) {
-            die("Query Failed! " . mysqli_error($connect));
-        }
+    // Check Password
+    if ($password == '') {
+        $error['password'] = 'Password can not be empty.';
+    }
 
-        $message = "<p class='alert-success text-center'>Registration has been submitted!</p>";
-    } else {
-        $message = "<p class='alert-danger text-center'>All fields are required!</p>";
+    if ($password < 4) {
+        $error = 'Password required at least 4 character';
     }
 }
 
