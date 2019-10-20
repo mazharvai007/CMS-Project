@@ -47,6 +47,15 @@ if (isset($_POST['submit'])) {
     if ($password < 4) {
         $error = 'Password required at least 4 character';
     }
+
+    // User is registered or not
+    foreach ($error as $key => $value) {
+        if (empty($value)) {
+            register_user($username, $email, $password);
+
+            login_user($username, $password);
+        }
+    }
 }
 
 ?>
@@ -62,7 +71,6 @@ if (isset($_POST['submit'])) {
                     <div class="form-wrap">
                     <h1>Register</h1>
                         <form role="form" action="registration.php" method="post" id="login-form" autocomplete="off">
-                            <?php echo $message; ?>
                             <div class="form-group">
                                 <label for="username" class="sr-only">username</label>
                                 <input type="text" name="username" id="username" class="form-control" placeholder="Enter Username">
