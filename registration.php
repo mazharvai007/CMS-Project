@@ -11,12 +11,14 @@ if (isset($_POST['submit'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    if (username_exists($username)) {
-        $message = "<p class='alert-success text-center'>The username is exists!</p>";
+    if (checkUsername($username)) {
+        $message = "<p class='alert-danger text-center'>The username is exists!</p>";
+    } elseif (checkEmail($email)) {
+        $message = "<p class='alert-danger text-center'>The email is exists!</p>";
     }
 
     // Fields validation
-     else if (!empty($username) && !empty($email) && !empty($password)) {
+     elseif (!empty($username) && !empty($email) && !empty($password)) {
 
         // Escaping the unknown string
         $username = mysqli_real_escape_string($connect, $username);
@@ -39,8 +41,6 @@ if (isset($_POST['submit'])) {
     } else {
         $message = "<p class='alert-danger text-center'>All fields are required!</p>";
     }
-} else {
-    $message = "";
 }
 
 ?>

@@ -1,5 +1,11 @@
 <?php
 
+
+    // Redirection
+    function redirect($location) {
+        return header("Location: " . $location);
+    }
+
     /* before going online of a project need to escape all data that files where has database. I used the function in the add_post.php file*/
     function escape($string) {
         global $connect;
@@ -191,8 +197,8 @@
         }
     }
 
-    // Username exist?
-    function username_exists($username) {
+    // Check username
+    function checkUsername($username) {
         global $connect;
 
         $username_query = "SELECT username FROM users WHERE username = '$username' ";
@@ -204,5 +210,24 @@
         } else {
             return false;
         }
+    }
+    // Check email
+    function checkEmail($email) {
+        global $connect;
+
+        $userEmail_query = "SELECT user_email FROM users WHERE user_email = '$email' ";
+        $result = mysqli_query($connect, $userEmail_query);
+        confirmQuery($result);
+
+        if (mysqli_num_rows($result) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Register Usr
+    function register_user($username, $email, $password) {
+        global $connect;
     }
 ?>
