@@ -175,7 +175,7 @@
     }
 
     // Is admin?
-    function is_admin($username = '') {
+    function is_admin($username) {
         global $connect;
 
         $user_query = "SELECT user_role FROM users WHERE username = '$username' ";
@@ -185,6 +185,21 @@
         $row = mysqli_fetch_array($result);
 
         if ($row['user_role'] == 'admin') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Username exist?
+    function username_exists($username) {
+        global $connect;
+
+        $username_query = "SELECT username FROM users WHERE username = '$username' ";
+        $result = mysqli_query($connect, $username_query);
+        confirmQuery($result);
+
+        if (mysqli_num_rows($result) > 0) {
             return true;
         } else {
             return false;

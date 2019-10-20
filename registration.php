@@ -11,8 +11,12 @@ if (isset($_POST['submit'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
+    if (username_exists($username)) {
+        $message = "<p class='alert-success text-center'>The username is exists!</p>";
+    }
+
     // Fields validation
-    if (!empty($username) && !empty($email) && !empty($password)) {
+     else if (!empty($username) && !empty($email) && !empty($password)) {
 
         // Escaping the unknown string
         $username = mysqli_real_escape_string($connect, $username);
@@ -23,18 +27,6 @@ if (isset($_POST['submit'])) {
         $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 15));
 
         // Access the rand salt column
-//        $query = "SELECT user_randSalt FROM users";
-//        $select_randSalt_query = mysqli_query($connect, $query);
-//
-//        if (!$select_randSalt_query) {
-//            die("Query Failed!" . mysqli_error($connect));
-//        }
-//
-//        $row = mysqli_fetch_array($select_randSalt_query);
-//        $salt = $row['user_randSalt'];
-
-        // Encrypting the password
-//        $password = crypt($password, $salt);
 
         // Insert register user into the user table
         $query = "INSERT INTO users (username, user_email, user_password, user_role) VALUES ('{$username}', '{$email}', '{$password}', 'subscriber' )";
