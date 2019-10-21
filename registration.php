@@ -18,33 +18,25 @@ if (isset($_POST['submit'])) {
     ];
 
     // Validate username field
-    if (strlen($username) < 4) {
-        $error['username'] = 'Username required at least 4 character.';
-    }
-
     if ($username == '') {
         $error['username'] = 'Username can not be empty!';
-    }
-
-    if (checkUsername($username)) {
+    } elseif (strlen($username) < 4) {
+        $error['username'] = 'Username required at least 4 character.';
+    } elseif (checkUsername($username)) {
         $error['username'] = 'Username already exists, pick another one!';
     }
 
     // Validate email field
     if ($email == '') {
         $error['email'] = 'Email field can not be empty!';
-    }
-
-    if (checkEmail($email)) {
+    } elseif (checkEmail($email)) {
         $error['email'] = 'Email already exists, pick another one! or <a href="index.php">Please Login</a>';
     }
 
     // Check Password
     if ($password == '') {
         $error['password'] = 'Password can not be empty.';
-    }
-
-    if ($password < 4) {
+    } elseif ($password < 4) {
         $error = 'Password required at least 4 character';
     }
 
@@ -73,14 +65,17 @@ if (isset($_POST['submit'])) {
                             <div class="form-group">
                                 <label for="username" class="sr-only">username</label>
                                 <input type="text" name="username" id="username" class="form-control" placeholder="Enter Username" autocomplete="on" value="<?php echo isset($username) ? $username : ''; ?>">
+                                <p><?php echo isset($error['username']) ? '<span class="alert-danger">' . $error['username'] . '</span>' : '' ?></p>
                             </div>
                              <div class="form-group">
                                 <label for="email" class="sr-only">Email</label>
                                 <input type="email" name="email" id="email" class="form-control" placeholder="somebody@example.com" autocomplete="on" value="<?php echo isset($email) ? $email : ''; ?>">
+                                 <p><?php echo isset($error['email']) ? '<span class="alert-danger">' . $error['email'] . '</span>' : '' ?></p>
                             </div>
                              <div class="form-group">
                                 <label for="password" class="sr-only">Password</label>
                                 <input type="password" name="password" id="key" class="form-control" placeholder="Password">
+                                 <p><?php echo isset($error['password']) ? '<span class="alert-danger">' . $error['password'] . '</span>' : '' ?></p>
                             </div>
 
                             <input type="submit" name="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Register">
