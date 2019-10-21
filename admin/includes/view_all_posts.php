@@ -125,6 +125,7 @@
                         <th>Views</th>
                         <th>Reset</th>
                         <th>Edit</th>
+<!--                        <th>Delete</th>-->
                         <th>Delete</th>
                     </tr>
                 </thead>
@@ -196,12 +197,22 @@
 //                                echo "<td>$post_comments_count</td>";
                                 echo "<td><a href='post_comments.php?id=$post_id'>$count_comment</a></td>";
                                 echo "<td>$post_date</td>";
-                                echo "<td><a href='../post.php?p_id=$post_id'>Preview</a></td>";
+                                echo "<td><a class='btn btn-primary' href='../post.php?p_id=$post_id'>Preview</a></td>";
                                 echo "<td>$post_views_count</td>";
-                                echo "<td><a onClick=\"javascript: return confirm('Are you sure, you want to reset the post views?')\" href='posts.php?reset=$post_id'>Reset</a></td>";
-                                echo "<td><a onClick=\"javascript: return confirm('Are you sure, you want to edit the post?')\" href='posts.php?source=edit_post&p_id=$post_id'>Edit</a></td>";
+                                echo "<td><a class='btn btn-success' onClick=\"javascript: return confirm('Are you sure, you want to reset the post views?')\" href='posts.php?reset=$post_id'>Reset</a></td>";
+                                echo "<td><a class='btn btn-info' onClick=\"javascript: return confirm('Are you sure, you want to edit the post?')\" href='posts.php?source=edit_post&p_id=$post_id'>Edit</a></td>";
 //                                echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete?');\" href='posts.php?delete=$post_id'>Delete</a></td>";
-                                echo "<td><a class='post-delete-btn' href='javascript:void(0)' rel='$post_id'>Delete</a></td>";
+//                                echo "<td><a class='post-delete-btn' href='javascript:void(0)' rel='$post_id'>Delete</a></td>";
+                                ?>
+
+                                    <form action="" method="post">
+                                        <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
+                                        <?php
+                                            echo "<td><input class='btn btn-danger' type='submit' name='delete' value='Delete'></td>";
+                                        ?>
+                                    </form>
+
+                                <?php
                                 echo "</tr>";
                         }
                     ?>
@@ -215,15 +226,15 @@
     delete_post();
 ?>
 
-<script src="js/jquery.js"></script>
-<script>
-    $(document).ready(function() {
-        $(".post-delete-btn").on("click", function () {
-            var post_id = $(this).attr("rel");
-            var post_delete = "posts.php?delete=" + post_id +" ";
-
-            $(".delete-post-modal").attr("href", post_delete);
-            $("#deleteModalPost").modal('show');
-        });
-    });
-</script>
+<!--<script src="js/jquery.js"></script>-->
+<!--<script>-->
+<!--    $(document).ready(function() {-->
+<!--        $(".post-delete-btn").on("click", function () {-->
+<!--            var post_id = $(this).attr("rel");-->
+<!--            var post_delete = "posts.php?delete=" + post_id +" ";-->
+<!---->
+<!--            $(".delete-post-modal").attr("href", post_delete);-->
+<!--            $("#deleteModalPost").modal('show');-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->

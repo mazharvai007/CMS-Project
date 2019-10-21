@@ -89,12 +89,22 @@
         // Connect with DB globally inside each function
         global $connect;
 
-        if (isset($_GET['delete'])) {
-            $delete_post_id = $_GET['delete'];
-            $query = "DELETE FROM posts WHERE post_id = {$delete_post_id}";
-            $delete_post = mysqli_query($connect, $query);
+//        if (isset($_GET['delete'])) {
+//            $delete_post_id = $_GET['delete'];
+//            $query = "DELETE FROM posts WHERE post_id = {$delete_post_id}";
+//            $delete_post = mysqli_query($connect, $query);
+//
+//            header("Location: posts.php");
+//        }
 
+        if (isset($_POST['delete'])) {
+            $delete_post_id = $_POST['post_id'];
+            $delete_query = "DELETE FROM posts WHERE post_id = {$delete_post_id}";
+            $delete_post = mysqli_query($connect, $delete_query);
+
+            confirmQuery($delete_post);
             header("Location: posts.php");
+
         }
     }
 
