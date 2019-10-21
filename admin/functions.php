@@ -1,5 +1,10 @@
 <?php
 
+    // Redirection
+    function redirect($location) {
+        return header("Location:" . $location);
+    }
+
     /* before going online of a project need to escape all data that files where has database. I used the function in the add_post.php file*/
     function escape($string) {
         global $connect;
@@ -84,12 +89,22 @@
         // Connect with DB globally inside each function
         global $connect;
 
-        if (isset($_GET['delete'])) {
-            $delete_post_id = $_GET['delete'];
-            $query = "DELETE FROM posts WHERE post_id = {$delete_post_id}";
-            $delete_post = mysqli_query($connect, $query);
+//        if (isset($_GET['delete'])) {
+//            $delete_post_id = $_GET['delete'];
+//            $query = "DELETE FROM posts WHERE post_id = {$delete_post_id}";
+//            $delete_post = mysqli_query($connect, $query);
+//
+//            header("Location: posts.php");
+//        }
 
+        if (isset($_POST['delete'])) {
+            $delete_post_id = $_POST['post_id'];
+            $delete_query = "DELETE FROM posts WHERE post_id = {$delete_post_id}";
+            $delete_post = mysqli_query($connect, $delete_query);
+
+            confirmQuery($delete_post);
             header("Location: posts.php");
+
         }
     }
 
@@ -147,4 +162,134 @@
         }
     }
     users_online();
+
+    // Record count of dashboard
+    function recordCount($table) {
+        global $connect;
+
+        $post_query = "SELECT * FROM . $table";
+        $select_all_post = mysqli_query($connect, $post_query);
+        $result = mysqli_num_rows($select_all_post);
+
+        confirmQuery($result);
+
+        return $result;
+    }
+
+    // Check post, comments, and users
+    function checkStatus($table, $column, $status) {
+        global $connect;
+
+        $checkStatus_query = "SELECT * FROM $table WHERE $column = '$status' ";
+        $select_all_pub_post = mysqli_query($connect, $checkStatus_query);
+        $result = mysqli_num_rows($select_all_pub_post);
+
+        confirmQuery($result);
+
+        return $result;
+    }
+
+    // Is admin?
+    function is_admin($username) {
+        global $connect;
+
+        $user_query = "SELECT user_role FROM users WHERE username = '$username' ";
+        $result = mysqli_query($connect, $user_query);
+        confirmQuery($result);
+
+        $row = mysqli_fetch_array($result);
+
+        if ($row['user_role'] == 'admin') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Check username
+    function checkUsername($username) {
+        global $connect;
+
+        $username_query = "SELECT username FROM users WHERE username = '$username' ";
+        $result = mysqli_query($connect, $username_query);
+        confirmQuery($result);
+
+        if (mysqli_num_rows($result) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    // Check email
+    function checkEmail($email) {
+        global $connect;
+
+        $userEmail_query = "SELECT user_email FROM users WHERE user_email = '$email' ";
+        $result = mysqli_query($connect, $userEmail_query);
+        confirmQuery($result);
+
+        if (mysqli_num_rows($result) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Register User
+    function register_user($username, $email, $password) {
+        global $connect;
+
+        // Escaping the unknown string
+        $username = mysqli_real_escape_string($connect, $username);
+        $email = mysqli_real_escape_string($connect, $email);
+        $password = mysqli_real_escape_string($connect, $password);
+
+        // Password HASH
+        $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 15));
+
+        // Access the rand salt column
+
+        // Insert register user into the user table
+        $query = "INSERT INTO users (username, user_email, user_password, user_role) VALUES ('{$username}', '{$email}', '{$password}', 'subscriber' )";
+        $register_user_query = mysqli_query($connect, $query);
+
+        confirmQuery($register_user_query);
+    }
+
+    // User login
+    function login_user($username, $password) {
+        global $connect;
+
+        // secure from anonymous injection
+        $username = mysqli_real_escape_string($connect, $username);
+        $password = mysqli_real_escape_string($connect, $password);
+
+        $query = "SELECT * FROM users WHERE username = '{$username}' ";
+        $select_user_query = mysqli_query($connect, $query);
+
+        if (!$select_user_query) {
+            die("Query Failed!" . mysqli_error($connect));
+        }
+
+        while($row = mysqli_fetch_array($select_user_query)) {
+            $db_user_id = $row['user_id'];
+            $db_username = $row['username'];
+            $db_user_password = $row['user_password'];
+            $db_user_firstname = $row['user_firstname'];
+            $db_user_lastname = $row['user_lastname'];
+            $db_user_role = $row['user_role'];
+        }
+
+        // Password HASH with verify between login and db
+        if (password_verify($password, $db_user_password)) {
+            $_SESSION['username'] = $db_username;
+            $_SESSION['firstname'] = $db_user_firstname;
+            $_SESSION['lastname'] = $db_user_lastname;
+            $_SESSION['user_role'] = $db_user_role;
+
+            redirect("/practice/php/CMS-Project/admin");
+        } else {
+            redirect("/practice/php/CMS-Project/index.php");
+        }
+    }
 ?>

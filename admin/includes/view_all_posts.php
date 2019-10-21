@@ -125,6 +125,7 @@
                         <th>Views</th>
                         <th>Reset</th>
                         <th>Edit</th>
+<!--                        <th>Delete</th>-->
                         <th>Delete</th>
                     </tr>
                 </thead>
@@ -132,7 +133,9 @@
 
                     <?php
                         // Select all data from categories
-                        $query = "SELECT * FROM posts ORDER BY post_id DESC";
+//                        $query = "SELECT * FROM posts ORDER BY post_id DESC";
+                        $query = "SELECT posts.post_id, posts.post_author, posts.post_user, posts.post_title, posts.post_category_id, posts.post_status, posts.post_image, posts.post_tags, posts.post_comments_count, posts.post_date, posts.post_views_count, categories.cat_id, categories.cat_title FROM posts LEFT JOIN categories ON posts.post_category_id = categories.cat_id ORDER BY posts.post_id DESC ";
+
                         // Connect DB for getting data from categories
                         $get_posts = mysqli_query($connect, $query);
 
@@ -142,16 +145,18 @@
                             $post_author = $row["post_author"];
                             $post_user = $row["post_user"];
                             $post_title = $row["post_title"];
-                            $post_category = $row["post_category_id"];
+                            $post_category_id = $row["post_category_id"];
                             $post_status = $row["post_status"];
                             $post_image = $row["post_image"];
                             $post_tags = $row["post_tags"];
                             $post_comments_count = $row["post_comments_count"];
                             $post_date = $row["post_date"];
                             $post_views_count = $row['post_views_count'];
+                            $cat_id = $row['cat_id'];
+                            $cat_title = $row['cat_title'];
 
                             // Select all data from categories
-                            $query = "SELECT * FROM categories WHERE cat_id = $post_category";
+                            $query = "SELECT * FROM categories WHERE cat_id = $post_category_id";
                             // Connect data for getting data from categories
                             $select_categories = mysqli_query($connect, $query);
 
@@ -192,12 +197,22 @@
 //                                echo "<td>$post_comments_count</td>";
                                 echo "<td><a href='post_comments.php?id=$post_id'>$count_comment</a></td>";
                                 echo "<td>$post_date</td>";
-                                echo "<td><a href='../post.php?p_id=$post_id'>Preview</a></td>";
+                                echo "<td><a class='btn btn-primary' href='../post.php?p_id=$post_id'>Preview</a></td>";
                                 echo "<td>$post_views_count</td>";
-                                echo "<td><a onClick=\"javascript: return confirm('Are you sure, you want to reset the post views?')\" href='posts.php?reset=$post_id'>Reset</a></td>";
-                                echo "<td><a onClick=\"javascript: return confirm('Are you sure, you want to edit the post?')\" href='posts.php?source=edit_post&p_id=$post_id'>Edit</a></td>";
+                                echo "<td><a class='btn btn-success' onClick=\"javascript: return confirm('Are you sure, you want to reset the post views?')\" href='posts.php?reset=$post_id'>Reset</a></td>";
+                                echo "<td><a class='btn btn-info' onClick=\"javascript: return confirm('Are you sure, you want to edit the post?')\" href='posts.php?source=edit_post&p_id=$post_id'>Edit</a></td>";
 //                                echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete?');\" href='posts.php?delete=$post_id'>Delete</a></td>";
-                                echo "<td><a class='post-delete-btn' href='javascript:void(0)' rel='$post_id'>Delete</a></td>";
+//                                echo "<td><a class='post-delete-btn' href='javascript:void(0)' rel='$post_id'>Delete</a></td>";
+                                ?>
+
+                                    <form action="" method="post">
+                                        <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
+                                        <?php
+                                            echo "<td><input class='btn btn-danger' type='submit' name='delete' value='Delete'></td>";
+                                        ?>
+                                    </form>
+
+                                <?php
                                 echo "</tr>";
                         }
                     ?>
@@ -211,15 +226,15 @@
     delete_post();
 ?>
 
-<script src="js/jquery.js"></script>
-<script>
-    $(document).ready(function() {
-        $(".post-delete-btn").on("click", function () {
-            var post_id = $(this).attr("rel");
-            var post_delete = "posts.php?delete=" + post_id +" ";
-
-            $(".delete-post-modal").attr("href", post_delete);
-            $("#deleteModalPost").modal('show');
-        });
-    });
-</script>
+<!--<script src="js/jquery.js"></script>-->
+<!--<script>-->
+<!--    $(document).ready(function() {-->
+<!--        $(".post-delete-btn").on("click", function () {-->
+<!--            var post_id = $(this).attr("rel");-->
+<!--            var post_delete = "posts.php?delete=" + post_id +" ";-->
+<!---->
+<!--            $(".delete-post-modal").attr("href", post_delete);-->
+<!--            $("#deleteModalPost").modal('show');-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
