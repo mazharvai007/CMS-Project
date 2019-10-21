@@ -145,6 +145,7 @@
 
             // User Subscriber
             $sub_user_count = checkStatus('users', 'user_role', 'subscriber');
+
         ?>
 
         <!-- /.row -->

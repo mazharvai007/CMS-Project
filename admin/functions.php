@@ -240,7 +240,7 @@
         // Access the rand salt column
 
         // Insert register user into the user table
-        $query = "INSERT INTO users (username, user_email, user_password, user_role) VALUES ('{$username}', '{$email}', '{$password}', 'admin' )";
+        $query = "INSERT INTO users (username, user_email, user_password, user_role) VALUES ('{$username}', '{$email}', '{$password}', 'subscriber' )";
         $register_user_query = mysqli_query($connect, $query);
 
         confirmQuery($register_user_query);
