@@ -4,7 +4,8 @@ include("includes/header.php");
 include("includes/navigation.php");
 
 // User Registration
-if (isset($_POST['submit'])) {
+//if (isset($_POST['register'])) {
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     // Validate the fields
     $username = trim($_POST['username']);
@@ -36,16 +37,20 @@ if (isset($_POST['submit'])) {
     // Check Password
     if ($password == '') {
         $error['password'] = 'Password can not be empty.';
-    } elseif ($password < 4) {
-        $error = 'Password required at least 4 character';
+    } elseif (strlen($password) < 4) {
+        $error['password'] = 'Password required at least 4 character';
     }
 
     // User is registered or not
     foreach ($error as $key => $value) {
         if (empty($value)) {
-//            register_user($username, $email, $password);
-//            login_user($username, $password);
+            unset($error[$key]);
         }
+    }
+
+    if (empty($error)) {
+        register_user($username, $email, $password);
+        login_user($username, $password);
     }
 }
 
@@ -78,7 +83,7 @@ if (isset($_POST['submit'])) {
                                  <p><?php echo isset($error['password']) ? '<span class="alert-danger">' . $error['password'] . '</span>' : '' ?></p>
                             </div>
 
-                            <input type="submit" name="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Register">
+                            <input type="submit" name="register" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Register">
                         </form>
 
                     </div>
