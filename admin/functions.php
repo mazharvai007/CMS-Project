@@ -277,9 +277,9 @@
             $_SESSION['lastname'] = $db_user_lastname;
             $_SESSION['user_role'] = $db_user_role;
 
-            redirect("/CMS-Project/admin");
+            redirect("/practice/php/CMS-Project/admin");
         } else {
-            redirect("/CMS-Project/index.php");
+            redirect("/practice/php/CMS-Project/index.php");
         }
     }
 ?>
