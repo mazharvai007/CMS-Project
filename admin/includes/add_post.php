@@ -1,22 +1,23 @@
 <?php 
     if (isset($_POST['add_post'])) {
 
-        $post_title = $_POST['title'];
-        $post_category_id = $_POST['post_category'];
-        $post_author = $_POST['author'];
-        $post_status = $_POST['post_status'] ;
+        $post_title = escape($_POST['title']);
+        $post_category_id = escape($_POST['post_category']);
+        $post_author = escape($_POST['post_author']);
+        $post_user = escape($_POST['post_user']);
+        $post_status = escape($_POST['post_status']);
 
-        $post_image = $_FILES['image']['name'];
-        $post_image_tmp = $_FILES['image']['tmp_name'];
+        $post_image = escape($_FILES['image']['name']);
+        $post_image_tmp = escape($_FILES['image']['tmp_name']);
         
-        $post_tags = $_POST['post_tags'];
-        $post_content = $_POST['post_content'];
-        $post_date = date("d-m-y");
+        $post_tags = escape($_POST['post_tags']);
+        $post_content = escape($_POST['post_content']);
+        $post_date = escape(date("d-m-y"));
 
         // The uploaded image is moved to the images folder
         move_uploaded_file($post_image_tmp,"../images/$post_image");
 
-        $query = "INSERT INTO posts(post_category_id, post_title, post_author, post_date, post_image, post_content, post_tags, post_status) VALUES({$post_category_id}, '{$post_title}', '{$post_author}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_status}')";
+        $query = "INSERT INTO posts(post_category_id, post_title, post_author, post_user, post_date, post_image, post_content, post_tags, post_status) VALUES({$post_category_id}, '{$post_title}', '{$post_author}', '{$post_user}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_status}')";
 
         $create_post_query = mysqli_query($connect, $query);
 
@@ -62,9 +63,52 @@
             ?>
         </select>
     </div>
+<!--    <div class="form-group">-->
+<!--        <label for="author">Author</label>-->
+<!--        <input type="text" class="form-control" name="author">-->
+<!--        <select name="post_author" id="" class="form-control">-->
+<!--            --><?php
+//            // Select all data from categories
+//            $author_query = "SELECT * FROM users";
+//            // Connect data for getting data from categories
+//            $select_author = mysqli_query($connect, $author_query);
+//
+//            confirmQuery($select_author);
+//
+//            // Fetch the category from categories table by associative array
+//            while ($row = mysqli_fetch_assoc($select_author)) {
+//                $user_id = $row["user_id"];
+//                $username = $row['username'];
+//
+//                echo "
+//                        <option value='{$username}'>{$username}</option>
+//                    ";
+//            }
+//            ?>
+<!--        </select>-->
+<!--    </div>-->
     <div class="form-group">
-        <label for="author">Author</label>
-        <input type="text" class="form-control" name="author">
+        <label for="author">User</label>
+        <select name="post_user" id="" class="form-control">
+            <?php
+            // Select all data from categories
+            $users_query = "SELECT * FROM users";
+            // Connect data for getting data from categories
+            $select_users = mysqli_query($connect, $users_query);
+
+            confirmQuery($select_users);
+
+            // Fetch the category from categories table by associative array
+            while ($row = mysqli_fetch_assoc($select_users)) {
+                $user_id = $row["user_id"];
+                $username = $row['username'];
+
+                echo "
+                        <option value='{$username}'>{$username}</option>
+                    ";
+            }
+            ?>
+        </select>
     </div>
     <div class="form-group">
         <label for="status">Status</label>

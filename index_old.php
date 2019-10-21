@@ -16,11 +16,7 @@ include("includes/navigation.php");
 
             <?php
 
-                if (isset($_GET['category'])) {
-                    $category_posts = $_GET['category'];
-                }
-
-                $query = "SELECT * FROM posts WHERE post_category_id = $category_posts ";
+                $query = "SELECT * FROM posts ";
                 $select_all_posts_query = mysqli_query($connect, $query);
 
                 while ($posts = mysqli_fetch_assoc($select_all_posts_query)) {
@@ -30,11 +26,9 @@ include("includes/navigation.php");
                     $post_date = $posts["post_date"];
                     $post_image = $posts["post_image"];
                     $post_content = substr($posts["post_content"], 0, 300);
-                    $post_tags = $posts["post_tags"];
-                    $post_comments_count = $posts["post_comments_count"];
                     $post_status = $posts["post_status"];
 
-                    ?>
+                    if ($post_status == 'published') {?>
 
                     <h1 class="page-header">
                         Page Heading
@@ -46,7 +40,7 @@ include("includes/navigation.php");
                         <a href="post.php?p_id=<?php echo $post_id; ?>"><?php echo $post_title; ?></a>
                     </h2>
                     <p class="lead">
-                        by <a href="#"><?php echo $post_author; ?></a>
+                        by <a href="author_posts.php?author=<?php echo $post_author; ?>&p_id=<?php echo $post_id; ?>"><?php echo $post_author; ?></a>
                     </p>
                     <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date; ?></p>
                     <hr>
@@ -60,7 +54,7 @@ include("includes/navigation.php");
                     <hr>
 
                 <?php }
-
+                }
             ?>
 
 
@@ -75,7 +69,7 @@ include("includes/navigation.php");
 
     <hr>
 
-    <!-- Footer -->
-    <?php
+<!-- Footer -->
+<?php
     include("includes/footer.php");
-    ?>
+?>

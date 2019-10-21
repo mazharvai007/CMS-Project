@@ -18,5 +18,22 @@ $(document).ready(function() {
             });
         }
         e.preventDefault();
-    })
+    });
+
+    // Page loader
+    // var div_box = "<div id='load-screen'><div id='loading'></div></div>";
+    // $("body").prepend(div_box);
+    // $('#load-screen').delay(700).fadeOut(600, function () {
+    //     $(this).remove();
+    // });
 });
+
+// Users Online
+function loadUsersOnline() {
+    $.get("functions.php?usersOnline=result", function (data) {
+        $(".online-user").text(data);
+    });
+}
+setInterval(function () {
+    loadUsersOnline();
+}, 500);

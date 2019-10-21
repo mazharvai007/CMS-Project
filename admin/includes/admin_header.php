@@ -1,11 +1,11 @@
-<?php 
+<?php
+    ob_start();
     // Connect DB
     include("../includes/db.php");
     
     // Connect functions.php file
     include("functions.php");
-    
-    ob_start();
+
     session_start();
 
     if (!isset($_SESSION['user_role'])) {
@@ -38,6 +38,9 @@
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Preloader css-->
+<!--    <link rel="stylesheet" href="../admin/css/loader.css">-->
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

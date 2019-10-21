@@ -3,14 +3,15 @@
         $the_post_id = $_GET['p_id'];
     }
     // Select all data from categories
-    $query = "SELECT * FROM posts WHERE post_id = $the_post_id ";
+    $query_post_id = "SELECT * FROM posts WHERE post_id = $the_post_id ";
     // Connect DB for getting data from categories
-    $get_posts_by_id = mysqli_query($connect, $query);
+    $get_posts_by_id = mysqli_query($connect, $query_post_id);
 
     // Fetch the category from categories table by associative array
     while ($row = mysqli_fetch_assoc($get_posts_by_id)) {
         $post_id = $row["post_id"];
         $post_author = $row["post_author"];
+        $post_user = $row['post_user'];
         $post_title = $row["post_title"];
         $post_category = $row["post_category_id"];
         $post_status = $row["post_status"];
@@ -20,11 +21,13 @@
         $post_date = $row["post_date"];
     }
 
+
     // Validate the post update fields
     if (isset($_POST['update_post'])) {
         $post_title = $_POST['title'];
         $post_category = $_POST['post_category'];
-        $post_author = $_POST['author'];
+        $post_author = $_POST['post_author'];
+        $post_user = $_POST['post_user'];
         $post_status = $_POST['post_status'] ;
         $post_image = $_FILES['image']['name'];
         $post_image_tmp = $_FILES['image']['tmp_name'];
@@ -44,7 +47,7 @@
             }
         }
 
-        $query = "UPDATE posts SET post_title = '{$post_title}', post_category_id = '{$post_category}', post_date = now(), post_author = '{$post_author}', post_status = '{$post_status}', post_tags = '{$post_tags}', post_content = '{$post_content}', post_image = '{$post_image}' WHERE post_id = {$the_post_id}";
+        $query = "UPDATE posts SET post_title = '{$post_title}', post_category_id = '{$post_category}', post_date = now(), post_author = '{$post_author}', post_user = '{$post_user}', post_status = '{$post_status}', post_tags = '{$post_tags}', post_content = '{$post_content}', post_image = '{$post_image}' WHERE post_id = {$the_post_id}";
 
         $update_post = mysqli_query($connect, $query);
 
@@ -60,7 +63,9 @@
 
 
     }
+
 ?>
+
 
 <form action="" method="post" enctype="multipart/form-data">
     <div class="form-group">
@@ -83,20 +88,72 @@
                     $cat_id = $row["cat_id"];
                     $cat_title = $row['cat_title'];
 
-                    echo "
-                        <option value='{$cat_id}'>{$cat_title}</option>
-                    ";
+                    if ($cat_id == $post_category) {
+                        echo "<option selected value='{$cat_id}'>{$cat_title}</option>";
+                    } else {
+                        echo "<option value='{$cat_id}'>{$cat_title}</option>";
+                    }
                 }
             ?>
         </select>
     </div>
+<!--    <div class="form-group">-->
+<!--        <label for="author">Author</label>-->
+<!--        <input type="text" class="form-control" value="--><?php //echo $post_author; ?><!--" name="author">-->
+<!--    </div>-->
+
+<!--    <div class="form-group">-->
+<!--        <label for="author">Author</label>-->
+<!--        <select name="post_author" id="" class="form-control">-->
+<!--            <option value='--><?php //echo $post_user; ?><!--'>--><?php //echo $post_user; ?><!--</option>-->
+<!--            --><?php
+//            // Select all data from categories
+//            $users_query = "SELECT * FROM users";
+//            // Connect data for getting data from categories
+//            $select_users = mysqli_query($connect, $users_query);
+//
+//            confirmQuery($select_users);
+//
+//            // Fetch the category from categories table by associative array
+//            while ($row = mysqli_fetch_assoc($select_users)) {
+//                $user_id = $row["user_id"];
+//                $username = $row['username'];
+//
+//                echo "
+//                        <option value='{$username}'>{$username}</option>
+//                    ";
+//            }
+//            ?>
+<!--        </select>-->
+<!--    </div>-->
     <div class="form-group">
-        <label for="author">Author</label>
-        <input type="text" class="form-control" value="<?php echo $post_author; ?>" name="author">
+        <label for="author">User</label>
+        <select name="post_user" id="" class="form-control">
+            <?php echo "<option value='{$post_user}'>{$post_user}</option>"; ?>
+            <?php
+            // Select all data from categories
+            $users_query = "SELECT * FROM users";
+            // Connect data for getting data from categories
+            $select_users = mysqli_query($connect, $users_query);
+
+            confirmQuery($select_users);
+
+
+            // Fetch the category from categories table by associative array
+            while ($row = mysqli_fetch_assoc($select_users)) {
+                $user_id = $row["user_id"];
+                $username = $row['username'];
+
+                echo "
+                        <option value='{$username}'>{$username}</option>
+                    ";
+            }
+            ?>
+        </select>
     </div>
 
     <div class="form-group">
-        <label for="">Post Staus</label>
+        <label for="">Post Status</label>
         <select name="post_status" id="" class="form-control">
             <option value='<?php echo $post_status; ?>'><?php echo $post_status; ?></option>
 
@@ -131,7 +188,7 @@
     </div>
     <div class="form-group">
         <label for="content">Content</label>
-        <textarea class="form-control" name="post_content" id="editor" cols="30" rows="10"><?php echo $post_content; ?></textarea>
+        <textarea class="form-control" name="post_content" id="editor" cols="30" rows="10"><?php echo str_replace('\r\n', '</br>', $post_content); ?></textarea>
     </div>
     <div class="form-group">
         <input type="submit" class="btn btn-primary" name="update_post" value="Update Post">

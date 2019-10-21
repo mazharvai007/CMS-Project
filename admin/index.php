@@ -3,6 +3,7 @@
     include("includes/admin_header.php");
     // For navigation
     include("includes/admin_navigation.php");
+
 ?>
 
 <div id="page-wrapper">
@@ -14,10 +15,9 @@
             <div class="col-lg-12">
                 <h1 class="page-header">
                     Welcome to Admin
-
                     <small><?php echo $_SESSION['username']; ?></small>
-
                 </h1>
+
                 <ol class="breadcrumb">
                     <li>
                         <i class="fa fa-dashboard"></i> <a href="index.php">Dashboard</a>

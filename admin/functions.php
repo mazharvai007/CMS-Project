@@ -1,4 +1,11 @@
-<?php 
+<?php
+
+    /* before going online of a project need to escape all data that files where has database. I used the function in the add_post.php file*/
+    function escape($string) {
+        global $connect;
+
+        return mysqli_real_escape_string($connect, trim(strip_tags($string)));
+    }
 
     // Check the query is failed or not
     function confirmQuery($result) {
@@ -72,6 +79,7 @@
         }        
     }
 
+    // Delete Post
     function delete_post() {
         // Connect with DB globally inside each function
         global $connect;
@@ -84,4 +92,59 @@
             header("Location: posts.php");
         }
     }
+
+    // Reset visitors
+    function reset_visitors() {
+        global $connect;
+
+        // Reset Visitors
+//        if (isset($_GET['reset'])) {
+//            $reset_post_id = $_GET['reset'];
+//            $reset_query = "UPDATE posts SET post_views_count = 0 WHERE post_id = {$reset_post_id}";
+//            mysqli_query($connect, $reset_query);
+//
+//            header("Location: posts.php");
+//        }
+
+        if (isset($_GET['reset'])) {
+            $reset_post_id = $_GET['reset'];
+            $reset_query = "UPDATE posts SET post_views_count = 0 WHERE post_id =" . mysqli_real_escape_string($connect, $reset_post_id) . " ";
+            mysqli_query($connect, $reset_query);
+
+            header("Location: posts.php");
+        }
+    }
+
+    // Users online
+    function users_online() {
+
+        if (isset($_GET['usersOnline'])) {
+
+            global $connect;
+
+            if (!$connect) {
+                session_start();
+                include ("../includes/db.php");
+
+                $session = session_id();
+                $time = time();
+                $time_out_in_seconds = 30;
+                $time_out = $time - $time_out_in_seconds;
+
+                $session_query = "SELECT * FROM users_online WHERE session = '$session' ";
+                $send_session_query = mysqli_query($connect, $session_query);
+                $online_user_count = mysqli_num_rows($send_session_query);
+
+                if ($online_user_count == NULL) {
+                    mysqli_query($connect, "INSERT INTO users_online(session, time) VALUES ('$session', $time)");
+                } else {
+                    mysqli_query($connect, "UPDATE users_online SET time = '$time' WHERE session = '$session'");
+                }
+
+                $online_users_query = mysqli_query($connect, "SELECT * FROM users_online WHERE time > '$time_out'");
+                echo $user_count = mysqli_num_rows($online_users_query);
+            }
+        }
+    }
+    users_online();
 ?>
