@@ -132,7 +132,9 @@
 
                     <?php
                         // Select all data from categories
-                        $query = "SELECT * FROM posts ORDER BY post_id DESC";
+//                        $query = "SELECT * FROM posts ORDER BY post_id DESC";
+                        $query = "SELECT posts.post_id, posts.post_author, posts.post_user, posts.post_title, posts.post_category_id, posts.post_status, posts.post_image, posts.post_tags, posts.post_comments_count, posts.post_date, posts.post_views_count, categories.cat_id, categories.cat_title FROM posts LEFT JOIN categories ON posts.post_category_id = categories.cat_id ORDER BY posts.post_id DESC ";
+
                         // Connect DB for getting data from categories
                         $get_posts = mysqli_query($connect, $query);
 
@@ -142,16 +144,18 @@
                             $post_author = $row["post_author"];
                             $post_user = $row["post_user"];
                             $post_title = $row["post_title"];
-                            $post_category = $row["post_category_id"];
+                            $post_category_id = $row["post_category_id"];
                             $post_status = $row["post_status"];
                             $post_image = $row["post_image"];
                             $post_tags = $row["post_tags"];
                             $post_comments_count = $row["post_comments_count"];
                             $post_date = $row["post_date"];
                             $post_views_count = $row['post_views_count'];
+                            $cat_id = $row['cat_id'];
+                            $cat_title = $row['cat_title'];
 
                             // Select all data from categories
-                            $query = "SELECT * FROM categories WHERE cat_id = $post_category";
+                            $query = "SELECT * FROM categories WHERE cat_id = $post_category_id";
                             // Connect data for getting data from categories
                             $select_categories = mysqli_query($connect, $query);
 
