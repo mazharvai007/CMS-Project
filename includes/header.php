@@ -1,7 +1,9 @@
-<?php 
+<?php
+if (session_status() === PHP_SESSION_NONE) session_start();
 // Connect DB
 include("includes/db.php");
-session_start();
+
+include ("admin/functions.php")
 ?>
 
 <!DOCTYPE html>
