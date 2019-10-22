@@ -15,7 +15,7 @@ include("includes/navigation.php");
             <?php
 
                 if (isset($_GET['category'])) {
-                    $category_posts = $_GET['category'];
+                    $category_posts_id = $_GET['category'];
 
                     // Fetching post in the category page using the prepared statement part 1
                     if (is_admin($_SESSION['username'])) {
@@ -29,7 +29,7 @@ include("includes/navigation.php");
                     // Fetching post in the category page using the prepared statement part 2
                     if (isset($stmt1)) {
                         // Bind the data with the int "i"
-                        mysqli_stmt_bind_param($stmt1, "i", $post_category_id);
+                        mysqli_stmt_bind_param($stmt1, "i", $category_posts_id);
 
                         // Execute the statement
                         mysqli_stmt_execute($stmt1);
@@ -39,7 +39,7 @@ include("includes/navigation.php");
 
                         $stmt = $stmt1;
                     } else {
-                        mysqli_stmt_bind_param($stmt2, "is", $post_category_id, $published);
+                        mysqli_stmt_bind_param($stmt2, "is", $category_posts_id, $published);
                         mysqli_stmt_execute($stmt2);
 
                         mysqli_stmt_bind_result($stmt2, $post_id, $post_title, $post_author, $post_date, $post_image, $post_content);
@@ -47,9 +47,9 @@ include("includes/navigation.php");
                         $stmt = $stmt2;
                     }
 
-                if (mysqli_stmt_num_rows($stmt) === 0 ) {
-                    echo "<h1 class='text-center'>No Post available!</h1>";
-                }
+                    if (mysqli_stmt_num_rows($stmt) > 0 ) {
+                        echo "<h1 class='text-center'>No Post available!</h1>";
+                    }
 
                 // Fetch the data
                 while (mysqli_stmt_fetch($stmt)) :
