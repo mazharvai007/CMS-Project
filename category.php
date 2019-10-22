@@ -4,8 +4,6 @@ include("includes/header.php");
 include("includes/navigation.php");
 ?>
 
-
-
 <!-- Page Content -->
 <div class="container">
 
@@ -18,10 +16,19 @@ include("includes/navigation.php");
 
                 if (isset($_GET['category'])) {
                     $category_posts = $_GET['category'];
-                }
 
-                $query = "SELECT * FROM posts WHERE post_category_id = $category_posts ";
+                    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin') {
+                        $query = "SELECT * FROM posts WHERE post_category_id = $category_posts";
+                    } else {
+                        $query = "SELECT * FROM posts WHERE post_category_id = $category_posts AND post_status = 'published' ";
+                    }
+
+
                 $select_all_posts_query = mysqli_query($connect, $query);
+
+                if (mysqli_num_rows($select_all_posts_query) < 1 ) {
+                    echo "<h1 class='text-center'>No Post available!</h1>";
+                } else {
 
                 while ($posts = mysqli_fetch_assoc($select_all_posts_query)) {
                     $post_id = $posts["post_id"];
@@ -36,17 +43,12 @@ include("includes/navigation.php");
 
                     ?>
 
-                    <h1 class="page-header">
-                        Page Heading
-                        <small>Secondary Text</small>
-                    </h1>
-
                     <!-- First Blog Post -->
                     <h2>
                         <a href="post.php?p_id=<?php echo $post_id; ?>"><?php echo $post_title; ?></a>
                     </h2>
                     <p class="lead">
-                        by <a href="#"><?php echo $post_author; ?></a>
+                        by <a href="author_posts.php?author=<?php echo $post_author; ?>&p_id=<?php echo $post_id; ?>"><?php echo $post_author; ?></a>
                     </p>
                     <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date; ?></p>
                     <hr>
@@ -59,11 +61,12 @@ include("includes/navigation.php");
 
                     <hr>
 
-                <?php }
+                <?php } }
+                } else {
+                    header("Location: index.php");
+                }
 
             ?>
-
-
 
         </div>
 
