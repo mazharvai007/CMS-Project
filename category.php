@@ -17,6 +17,7 @@ include("includes/navigation.php");
                 if (isset($_GET['category'])) {
                     $category_posts = $_GET['category'];
 
+                    // Fetching post in the category page using the prepared statement part 1
                     if (is_admin($_SESSION['username'])) {
                         $stmt1 = mysqli_prepare($connect, "SELECT post_id, post_title, post_author, post_date, post_image, post_content FROM posts WHERE post_category_id = ?");
                     } else {
@@ -25,10 +26,28 @@ include("includes/navigation.php");
                         $published = 'published';
                     }
 
+                    // Fetching post in the category page using the prepared statement part 2
+                    if (isset($stmt1)) {
+                        // Bind the data with the int "i"
+                        mysqli_stmt_bind_param($stmt1, "i", $post_category_id);
 
-                $select_all_posts_query = mysqli_query($connect, $query);
+                        // Execute the statement
+                        mysqli_stmt_execute($stmt1);
 
-                if (mysqli_num_rows($select_all_posts_query) < 1 ) {
+                        // Bind the result with the variables
+                        mysqli_stmt_bind_result($stmt1, $post_id, $post_title, $post_author, $post_date, $post_image, $post_content);
+
+                        $stmt = $stmt1;
+                    } else {
+                        mysqli_stmt_bind_param($stmt2, "i", $post_category_id, $published);
+                        mysqli_stmt_execute($stmt2);
+
+                        mysqli_stmt_bind_result($stmt2, $post_id, $post_title, $post_author, $post_date, $post_image, $post_content);
+
+                        $stmt = $stmt2;
+                    }
+
+                if (mysqli_stmt_num_rows($stmt) < 1 ) {
                     echo "<h1 class='text-center'>No Post available!</h1>";
                 } else {
 
