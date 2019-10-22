@@ -17,10 +17,12 @@ include("includes/navigation.php");
                 if (isset($_GET['category'])) {
                     $category_posts = $_GET['category'];
 
-                    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin') {
-                        $query = "SELECT * FROM posts WHERE post_category_id = $category_posts";
+                    if (is_admin($_SESSION['username'])) {
+                        $stmt1 = mysqli_prepare($connect, "SELECT post_id, post_title, post_author, post_date, post_image, post_content FROM posts WHERE post_category_id = ?");
                     } else {
-                        $query = "SELECT * FROM posts WHERE post_category_id = $category_posts AND post_status = 'published' ";
+                        $stmt2 = mysqli_prepare($connect, "SELECT post_id, post_title, post_author, post_date, post_image, post_content FROM posts WHERE post_category_id = ? AND post_status = ? ");
+
+                        $published = 'published';
                     }
 
 
