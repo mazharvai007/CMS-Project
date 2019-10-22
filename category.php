@@ -74,7 +74,7 @@ include("includes/navigation.php");
 
                     <hr>
 
-                <?php endwhile; }
+                <?php endwhile; mysqli_stmt_close($stmt); }
                  else {
                     header("Location: index.php");
                 }

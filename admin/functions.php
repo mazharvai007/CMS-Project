@@ -40,6 +40,7 @@
                     die("Query Failed!" . mysqli_error($connect));
                 }
             }
+            mysqli_stmt_close($stmt);
         }        
     }
 
