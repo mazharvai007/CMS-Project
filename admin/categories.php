@@ -27,7 +27,7 @@ include("includes/admin_navigation.php");
                 <?php
                     add_categories();
                 ?>
-                <form action="" method="post">
+                <form action="" method="post" class="form-group">
                     <div class="form-group">
                         <label for="cat_title">Category Name</label>
                         <input type="text" class="form-control" id="cat_title" name="cat_title">

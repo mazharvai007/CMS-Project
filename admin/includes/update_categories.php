@@ -1,5 +1,5 @@
 <!-- Start Edit Category -->
-<form action="" method="post">
+<form action="" method="post" class="form-group">
     <div class="form-group">
         <label for="cat_title">Edit Category</label>
         <?php
@@ -26,10 +26,15 @@
             if (isset($_POST['update_category'])) {
                 $cat_title_update = $_POST['cat_title'];
 
-                $query = "UPDATE categories SET cat_title = '{$cat_title_update}' WHERE cat_id = {$cat_id_edit}";
-                $update_query = mysqli_query($connect, $query);
-
-                confirmQuery($update_query);
+                // Update category using mysqli prepare statement
+                $stmt = mysqli_prepare($connect, "UPDATE categories SET cat_title = ? WHERE cat_id = ? ");
+                mysqli_stmt_bind_param($stmt, 'si', $cat_title_update, $cat_id_edit);
+                mysqli_stmt_execute($stmt);
+                if (!$stmt) {
+                    die("Query Failed!" . mysqli_error($connect));
+                }
+                mysqli_stmt_close($stmt);
+                redirect("categories.php");
             }                                                    
         ?>
     </div>
