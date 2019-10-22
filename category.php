@@ -39,7 +39,7 @@ include("includes/navigation.php");
 
                         $stmt = $stmt1;
                     } else {
-                        mysqli_stmt_bind_param($stmt2, "i", $post_category_id, $published);
+                        mysqli_stmt_bind_param($stmt2, "is", $post_category_id, $published);
                         mysqli_stmt_execute($stmt2);
 
                         mysqli_stmt_bind_result($stmt2, $post_id, $post_title, $post_author, $post_date, $post_image, $post_content);
@@ -47,22 +47,14 @@ include("includes/navigation.php");
                         $stmt = $stmt2;
                     }
 
-                if (mysqli_stmt_num_rows($stmt) < 1 ) {
+                if (mysqli_stmt_num_rows($stmt) === 0 ) {
                     echo "<h1 class='text-center'>No Post available!</h1>";
-                } else {
+                }
 
-                while ($posts = mysqli_fetch_assoc($select_all_posts_query)) {
-                    $post_id = $posts["post_id"];
-                    $post_title = $posts["post_title"];
-                    $post_author = $posts["post_author"];
-                    $post_date = $posts["post_date"];
-                    $post_image = $posts["post_image"];
-                    $post_content = substr($posts["post_content"], 0, 300);
-                    $post_tags = $posts["post_tags"];
-                    $post_comments_count = $posts["post_comments_count"];
-                    $post_status = $posts["post_status"];
+                // Fetch the data
+                while (mysqli_stmt_fetch($stmt)) :
 
-                    ?>
+                ?>
 
                     <!-- First Blog Post -->
                     <h2>
@@ -82,8 +74,8 @@ include("includes/navigation.php");
 
                     <hr>
 
-                <?php } }
-                } else {
+                <?php endwhile; }
+                 else {
                     header("Location: index.php");
                 }
 
