@@ -4,7 +4,7 @@ include("includes/db.php");
 include("includes/header.php");
 include("includes/navigation.php");
 
-if (!ifItIsMethod('get') || !$_GET['forgot']) {
+if (!ifItIsMethod('get') && !isset($_GET['forgot'])) {
     redirect("index.php");
 }
 
@@ -13,6 +13,16 @@ if (ifItIsMethod('post')) {
         $email = $_POST['email'];
         $length = 50;
         $token = bin2hex(openssl_random_pseudo_bytes($length));
+
+        if (checkEmail($email)) {
+            if ($stmt = mysqli_prepare($connect, "UPDATE users SET token='{$token}' WHERE user_email= ? ")) {
+                mysqli_stmt_bind_param($stmt, "s", $email);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_close($stmt);
+            }
+        }  else {
+            echo "<p class='alert-danger text-center'>Email address does not match!</p>";
+        }
 
     }
 }
