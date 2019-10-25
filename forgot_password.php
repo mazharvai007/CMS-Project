@@ -18,7 +18,7 @@ require "./vendor/autoload.php";
 //require "./classes/config.php";
 
 
-if (!ifItIsMethod('get') && !isset($_GET['forgot'])) {
+if (!isset($_GET['forgot'])) {
     redirect("index.php");
 }
 
@@ -57,7 +57,9 @@ if (ifItIsMethod('post')) {
                 $mail->isHTML(true);
                 $mail->CharSet = 'UTF-8';
                 $mail->Subject = 'This is test email';
-                $mail->Body    = 'This is the message body';
+                $mail->Body    = '<p>Please click on the link to reset password!
+                    <a href="http://localhost/practice/php/CMS-Project/reset.php?email='.$email.'&token=' .$token.' ">http://localhost/practice/php/CMS-Project/reset.php?email='.$email.'&token=' .$token.'</a>
+                </p>';
 
 
                 if ($mail->send()){
