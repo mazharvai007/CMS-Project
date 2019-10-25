@@ -3,6 +3,19 @@
 include("includes/db.php");
 include("includes/header.php");
 include("includes/navigation.php");
+
+if (!ifItIsMethod('get') || !$_GET['forgot']) {
+    redirect("index.php");
+}
+
+if (ifItIsMethod('post')) {
+    if (isset($_POST['email'])) {
+        $email = $_POST['email'];
+        $length = 50;
+        $token = bin2hex(openssl_random_pseudo_bytes($length));
+
+    }
+}
 ?>
 
 <!-- Page Content -->
