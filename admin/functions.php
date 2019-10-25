@@ -314,7 +314,8 @@
 
             redirect("/practice/php/CMS-Project/admin");
         } else {
-            redirect("/practice/php/CMS-Project/index.php");
+//            redirect("/practice/php/CMS-Project/index.php");
+            return false;
         }
     }
 ?>
