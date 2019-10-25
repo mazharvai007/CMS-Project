@@ -15,7 +15,7 @@ require "./vendor/phpmailer/phpmailer/src/SMTP.php";
 require "./vendor/autoload.php";
 
 // Include config
-require "./classes/config.php";
+//require "./classes/config.php";
 
 
 if (!ifItIsMethod('get') && !isset($_GET['forgot'])) {
@@ -55,8 +55,10 @@ if (ifItIsMethod('post')) {
 
                 // Content
                 $mail->isHTML(true);
+                $mail->CharSet = 'UTF-8';
                 $mail->Subject = 'This is test email';
                 $mail->Body    = 'This is the message body';
+
 
                 if ($mail->send()){
                     echo "<p class='alert-success text-center'>Mail has been sent</p>";
