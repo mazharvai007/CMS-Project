@@ -3,6 +3,30 @@
     // Redirection
     function redirect($location) {
         return header("Location:" . $location);
+        exit();
+    }
+
+    // Check Method
+    function ifItIsMethod($method = null) {
+        if ($_SERVER['REQUEST_METHOD'] == strtoupper($method)) {
+            return true;
+        }
+        return false;
+    }
+
+    // Logged in method
+    function isLoggedIn() {
+        if (isset($_SESSION['user_role'])) {
+            return true;
+        }
+        return false;
+    }
+
+    // Check user logged in
+    function checkIfUserLoggedInAndRedirect($redirectLocation = null) {
+        if (isLoggedIn()) {
+            redirect($redirectLocation);
+        }
     }
 
     /* before going online of a project need to escape all data that files where has database. I used the function in the add_post.php file*/
@@ -290,7 +314,8 @@
 
             redirect("/practice/php/CMS-Project/admin");
         } else {
-            redirect("/practice/php/CMS-Project/index.php");
+//            redirect("/practice/php/CMS-Project/index.php");
+            return false;
         }
     }
 ?>
