@@ -134,9 +134,13 @@
                     <?php
                         // Select all data from categories
 //                        $query = "SELECT * FROM posts ORDER BY post_id DESC";
-                        $query = "SELECT posts.post_id, posts.post_author, posts.post_user, posts.post_title, posts.post_category_id, posts.post_status, posts.post_image, posts.post_tags, posts.post_comments_count, posts.post_date, posts.post_views_count, categories.cat_id, categories.cat_title FROM posts LEFT JOIN categories ON posts.post_category_id = categories.cat_id ORDER BY posts.post_id DESC ";
+                    $query = "SELECT posts.post_id, posts.post_author, posts.post_user, posts.post_title, posts.post_category_id, posts.post_status, posts.post_image, posts.post_tags, posts.post_comments_count, posts.post_date, posts.post_views_count, categories.cat_id, categories.cat_title FROM posts LEFT JOIN categories ON posts.post_category_id = categories.cat_id ORDER BY posts.post_id DESC ";
 
-                        // Connect DB for getting data from categories
+                    // Find current user post
+//                    $current_user = currentUser();
+//                    $query = "SELECT * FROM posts WHERE post_user = '$current_user' ORDER BY post_id DESC";
+
+                    // Connect DB for getting data from categories
                         $get_posts = mysqli_query($connect, $query);
 
                         // Fetch the category from categories table by associative array

@@ -260,6 +260,14 @@
         }
     }
 
+    // Check current user
+    function currentUser() {
+        if (isset($_SESSION['username'])) {
+            return $_SESSION['username'];
+        }
+        return false;
+    }
+
     // Register User
     function register_user($username, $email, $password) {
         global $connect;
