@@ -8,6 +8,7 @@ if (!isset($_GET['email']) && !isset($_GET['token'])) {
     redirect('index.php');
 }
 
+$email = 'karim@gmail.com';
 $token = 'ec446925ce4f5c774517a0b7d07e016f70830fcfd1df36cc7c34470538418fbd46f40eb705b3b25e9e38790e57662756cc41';
 
 if ($stmt = mysqli_prepare($connect, "SELECT username, user_email, token FROM users WHERE token=?")) {
@@ -22,7 +23,21 @@ if ($stmt = mysqli_prepare($connect, "SELECT username, user_email, token FROM us
     }
 
     if (isset($_POST['password']) && isset($_POST['confirmPassword'])) {
-        echo "Both are same";
+        if ($_POST['password'] === $_POST['confirmPassword']) {
+            $password = $_POST['password'];
+            $hashedPassword = password_hash($password, PASSWORD_BCRYPT, array('cost' => 15));
+
+            if ($stmt = mysqli_prepare($connect, "UPDATE users SET token ='', user_password= '{$hashedPassword}' WHERE user_email= ? ")) {
+
+                mysqli_stmt_bind_param($stmt, "s", $email);
+                mysqli_stmt_execute($stmt);
+                if (mysqli_stmt_affected_rows($stmt) >= 1) {
+                    echo "OK";
+                }
+            } else {
+                echo "Not";
+            }
+        }
     }
 
 }
