@@ -8,19 +8,17 @@ if (!isset($_GET['email']) && !isset($_GET['token'])) {
     redirect('index.php');
 }
 
-$email = 'karim@gmail.com';
-$token = 'ec446925ce4f5c774517a0b7d07e016f70830fcfd1df36cc7c34470538418fbd46f40eb705b3b25e9e38790e57662756cc41';
 
 if ($stmt = mysqli_prepare($connect, "SELECT username, user_email, token FROM users WHERE token=?")) {
     mysqli_stmt_bind_param($stmt, "s", $token);
     mysqli_stmt_execute($stmt);
-    mysqli_stmt_bind_result($stmt, $username, $user_email, $token);
+    mysqli_stmt_bind_result($stmt, $username, $user_email, $_GET['token']);
     mysqli_stmt_fetch($stmt);
     mysqli_stmt_close($stmt);
 
-    if ($_GET['token'] !== $token || $_GET['email'] !== $user_email) {
-        redirect("index.php");
-    }
+//    if ($_GET['token'] !== $token || $_GET['email'] !== $user_email) {
+//        redirect("index.php");
+//    }
 
     if (isset($_POST['password']) && isset($_POST['confirmPassword'])) {
         if ($_POST['password'] === $_POST['confirmPassword']) {
@@ -29,13 +27,12 @@ if ($stmt = mysqli_prepare($connect, "SELECT username, user_email, token FROM us
 
             if ($stmt = mysqli_prepare($connect, "UPDATE users SET token ='', user_password= '{$hashedPassword}' WHERE user_email= ? ")) {
 
-                mysqli_stmt_bind_param($stmt, "s", $email);
+                mysqli_stmt_bind_param($stmt, "s", $_GET['email']);
                 mysqli_stmt_execute($stmt);
                 if (mysqli_stmt_affected_rows($stmt) >= 1) {
-                    echo "OK";
+                    redirect('login.php');
                 }
-            } else {
-                echo "Not";
+                mysqli_stmt_close($stmt);
             }
         }
     }
@@ -92,7 +89,6 @@ if ($stmt = mysqli_prepare($connect, "SELECT username, user_email, token FROM us
             </div>
         </div>
     </div>
-
 
     <hr>
 
