@@ -214,6 +214,15 @@
         return $result;
     }
 
+    // Image placeholder
+    function imagePlaceholder($image='') {
+        if (!$image) {
+            return 'placeholder.jpeg';
+        } else {
+            return $image;
+        }
+    }
+
     // Is admin?
     function is_admin($username) {
         global $connect;
