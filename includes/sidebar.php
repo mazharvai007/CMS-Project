@@ -1,9 +1,11 @@
 <?php
     if (ifItIsMethod('post')) {
-        if (isset($_POST['login_user']) && isset($_POST['login_password'])) {
-            login_user($_POST['login_user'], $_POST['login_password']);
-        } else {
-            redirect("index.php");
+        if (isset($_POST['sign_in'])) {
+            if (isset($_POST['login_user']) && isset($_POST['login_password'])) {
+                login_user($_POST['login_user'], $_POST['login_password']);
+            } else {
+                redirect("index.php");
+            }
         }
     }
 ?>

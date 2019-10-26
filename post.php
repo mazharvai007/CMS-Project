@@ -4,8 +4,6 @@ include("includes/header.php");
 include("includes/navigation.php");
 ?>
 
-
-
     <!-- Page Content -->
     <div class="container">
 
@@ -18,41 +16,55 @@ include("includes/navigation.php");
 
                 if (isset($_GET['p_id'])) {
                     $the_post_id = $_GET['p_id'];
-                }
 
-                $query = "SELECT * FROM posts WHERE post_id = $the_post_id ";
-                $select_all_posts_query = mysqli_query($connect, $query);
+                    // Post veiw count query
+                    $view_query = "UPDATE posts SET post_views_count = post_views_count + 1 WHERE post_id = $the_post_id ";
+                    $send_view_query = mysqli_query($connect, $view_query);
 
-                while ($posts = mysqli_fetch_assoc($select_all_posts_query)) {
-                    $post_title = $posts["post_title"];
-                    $post_author = $posts["post_author"];
-                    $post_date = $posts["post_date"];
-                    $post_image = $posts["post_image"];
-                    $post_content = $posts["post_content"];
+                    // Check the view count query
+                    if (!$send_view_query) {
+                        die("Query Failed! " . mysqli_error($connect));
+                    }
 
-                    ?>
+                    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin') {
+                        $query = "SELECT * FROM posts WHERE post_id = $the_post_id ";
+                    } else {
+                        $query = "SELECT * FROM posts WHERE post_id = $the_post_id AND post_status == 'published' ";
+                    }
 
-                    <h1 class="page-header">
-                        Page Heading
-                        <small>Secondary Text</small>
-                    </h1>
+                    $select_all_posts_query = mysqli_query($connect, $query);
 
-                    <!-- First Blog Post -->
-                    <h2>
-                        <?php echo $post_title; ?>
-                    </h2>
-                    <p class="lead">
-                        by <a href="index.php"><?php echo $post_author; ?></a>
-                    </p>
-                    <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date; ?></p>
-                    <hr>
-                    <img class="img-responsive" src="images/<?php echo $post_image; ?>" alt="<?php echo $post_title; ?>">
-                    <hr>
-                    <p><?php echo $post_content; ?></p>
+                    if (mysqli_num_rows($select_all_posts_query) < 1 ) {
+                        echo "<h1 class='text-center'>No Post available!</h1>";
+                    } else {
 
-                    <hr>
+                    while ($posts = mysqli_fetch_assoc($select_all_posts_query)) {
+                        $post_title = $posts["post_title"];
+                        $post_author = $posts["post_author"];
+                        $post_date = $posts["post_date"];
+                        $post_image = $posts["post_image"];
+                        $post_content = $posts["post_content"];
 
-                <?php }
+                        ?>
+
+                        <!-- First Blog Post -->
+                        <h2>
+                            <?php echo $post_title; ?>
+                        </h2>
+                        <p class="lead">
+                            by
+                            <a href="author_posts.php?author=<?php echo $post_author; ?>&p_id=<?php echo $the_post_id; ?>"><?php echo $post_author; ?></a>
+                        </p>
+                        <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date; ?></p>
+                        <hr>
+                        <img class="img-responsive" src="images/<?php echo $post_image; ?>"
+                             alt="<?php echo $post_title; ?>">
+                        <hr>
+                        <p><?php echo $post_content; ?></p>
+
+                        <hr>
+
+                    <?php }
 
             ?>
 
@@ -145,7 +157,10 @@ include("includes/navigation.php");
                         </div>
                     </div>
 
-                <?php }
+                <?php } }
+                } else {
+                    header("Location: index.php");
+                }
             ?>
         </div>
 
