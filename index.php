@@ -117,22 +117,3 @@ include("includes/navigation.php");
 
 <!-- Footer -->
 <?php include("includes/footer.php"); ?>
-
-<!-- Pusher Integration -->
-<script src="https://js.pusher.com/5.0/pusher.min.js"></script>
-<script>
-
-    // Enable pusher logging - don't include this in production
-    $(document).ready(function () {
-        var puhser = new Pusher('ad1897aebedd9e57665f', {
-            cluster: 'us2',
-            encrypted: true
-        });
-
-        var channel = puhser.subscribe('notifications');
-        channel.bind('new_user', function (notification) {
-            var message = notification.message;
-            console.log(message);
-        })
-    });
-</script>
