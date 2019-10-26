@@ -3,6 +3,8 @@
 include("includes/header.php");
 include("includes/navigation.php");
 
+require "./vendor/autoload.php";
+
 // User Registration
 //if (isset($_POST['register'])) {
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
