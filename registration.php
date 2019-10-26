@@ -5,7 +5,12 @@ include("includes/navigation.php");
 
 require "./vendor/autoload.php";
 
-$pusher = new Pusher\Pusher('ad1897aebedd9e57665f', '77ca2aaea19a700c49a7', '888069', 'us2');
+$options = array(
+    'cluster' => 'us2',
+    'useTLS' => true
+);
+
+$pusher = new Pusher\Pusher('ad1897aebedd9e57665f', '77ca2aaea19a700c49a7', '888069', $options);
 
 
 // User Registration
