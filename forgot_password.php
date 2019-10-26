@@ -58,12 +58,13 @@ if (ifItIsMethod('post')) {
                 $mail->CharSet = 'UTF-8';
                 $mail->Subject = 'This is test email';
                 $mail->Body    = '<p>Please click on the link to reset password!
-                    <a href="http://localhost/practice/php/CMS-Project/reset.php?email='.$email.'&token=' .$token.' ">http://localhost/practice/php/CMS-Project/reset.php?email='.$email.'&token=' .$token.'</a>
+                    <a href="http://localhost/practice/php/CMS-Project/reset_password.php?email='.$email.'&token=' .$token.' ">http://localhost/practice/php/CMS-Project/reset_password.php?email='.$email.'&token=' .$token.'</a>
                 </p>';
 
 
                 if ($mail->send()){
-                    echo "<p class='alert-success text-center'>Mail has been sent</p>";
+                    $emailSent = true;
+//                    "<p class='alert-success text-center'>Mail has been sent</p>";
                 } else {
                     echo "<p class='alert-danger text-center'>Mail not sent</p>";
                 }
@@ -87,6 +88,7 @@ if (ifItIsMethod('post')) {
                     <div class="panel-body">
                         <div class="text-center">
 
+                            <?php if (!isset($emailSent)) : ?>
 
                             <h3><i class="fa fa-lock fa-4x"></i></h3>
                             <h2 class="text-center">Forgot Password?</h2>
@@ -109,6 +111,10 @@ if (ifItIsMethod('post')) {
                                 </form>
 
                             </div><!-- Body-->
+
+                            <?php else : ?>
+                                <div class='alert-success text-center' style="padding: 15px;">Mail has been sent. <h4>Please check your email.</h4></div>
+                            <?php endif; ?>
 
                         </div>
                     </div>
