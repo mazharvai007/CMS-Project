@@ -8,6 +8,21 @@ if (!isset($_GET['email']) && !isset($_GET['token'])) {
     redirect('index.php');
 }
 
+$token = 'ec446925ce4f5c774517a0b7d07e016f70830fcfd1df36cc7c34470538418fbd46f40eb705b3b25e9e38790e57662756cc41';
+
+if ($stmt = mysqli_prepare($connect, "SELECT username, user_email, token FROM users WHERE token=?")) {
+    mysqli_stmt_bind_param($stmt, "s", $token);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $username, $user_email, $token);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+
+    if ($_GET['token'] !== $token || $_GET['email'] !== $user_email) {
+        redirect("index.php");
+    }
+
+}
+
 ?>
 
 <div class="container">
