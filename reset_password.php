@@ -21,6 +21,10 @@ if ($stmt = mysqli_prepare($connect, "SELECT username, user_email, token FROM us
         redirect("index.php");
     }
 
+    if (isset($_POST['password']) && isset($_POST['confirmPassword'])) {
+        echo "Both are same";
+    }
+
 }
 
 ?>
