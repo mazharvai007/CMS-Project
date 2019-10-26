@@ -5,6 +5,9 @@ include("includes/navigation.php");
 
 require "./vendor/autoload.php";
 
+$pusher = new Pusher\Pusher('ad1897aebedd9e57665f', '77ca2aaea19a700c49a7', '888069', 'us2');
+
+
 // User Registration
 //if (isset($_POST['register'])) {
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -52,6 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     if (empty($error)) {
         register_user($username, $email, $password);
+
+        $pusher->trigger('notifications', 'new_user', $username);
+
         login_user($username, $password);
     }
 }
