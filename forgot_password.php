@@ -4,7 +4,21 @@ include("includes/db.php");
 include("includes/header.php");
 include("includes/navigation.php");
 
-if (!ifItIsMethod('get') && !isset($_GET['forgot'])) {
+// Include the phpmailer directories
+use PHPMailer\PHPMailer\PHPMailer;
+require "./vendor/phpmailer/phpmailer/src/Exception.php";
+require "./vendor/phpmailer/phpmailer/src/PHPMailer.php";
+require "./vendor/phpmailer/phpmailer/src/SMTP.php";
+
+
+// Load Composer's autoloader
+require "./vendor/autoload.php";
+
+// Include config
+//require "./classes/config.php";
+
+
+if (!isset($_GET['forgot'])) {
     redirect("index.php");
 }
 
@@ -19,6 +33,41 @@ if (ifItIsMethod('post')) {
                 mysqli_stmt_bind_param($stmt, "s", $email);
                 mysqli_stmt_execute($stmt);
                 mysqli_stmt_close($stmt);
+
+                /**
+                 * Configure PHPMailer
+                 */
+                // Instantiation and passing `true` enables exceptions
+                $mail = new PHPMailer(true);
+
+                // Server Settings to send email
+                $mail->isSMTP();
+                $mail->Host       = Config::SMTP_HOST;
+                $mail->SMTPAuth   = true;
+                $mail->Username   = Config::SMTP_USER;
+                $mail->Password   = Config::SMTP_PASS;
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port       = Config::SMTP_PORT;
+
+                // Recipients
+                $mail->setFrom('mazhar@themexpert.com', 'Mazhar');
+                $mail->addAddress($email);
+
+                // Content
+                $mail->isHTML(true);
+                $mail->CharSet = 'UTF-8';
+                $mail->Subject = 'This is test email';
+                $mail->Body    = '<p>Please click on the link to reset password!
+                    <a href="http://localhost/practice/php/CMS-Project/reset_password.php?email='.$email.'&token=' .$token.' ">http://localhost/practice/php/CMS-Project/reset_password.php?email='.$email.'&token=' .$token.'</a>
+                </p>';
+
+
+                if ($mail->send()){
+                    $emailSent = true;
+//                    "<p class='alert-success text-center'>Mail has been sent</p>";
+                } else {
+                    echo "<p class='alert-danger text-center'>Mail not sent</p>";
+                }
             }
         }  else {
             echo "<p class='alert-danger text-center'>Email address does not match!</p>";
@@ -39,14 +88,12 @@ if (ifItIsMethod('post')) {
                     <div class="panel-body">
                         <div class="text-center">
 
+                            <?php if (!isset($emailSent)) : ?>
 
                             <h3><i class="fa fa-lock fa-4x"></i></h3>
                             <h2 class="text-center">Forgot Password?</h2>
                             <p>You can reset your password here.</p>
                             <div class="panel-body">
-
-
-
 
                                 <form id="register-form" role="form" autocomplete="off" class="form" method="post">
 
@@ -64,6 +111,10 @@ if (ifItIsMethod('post')) {
                                 </form>
 
                             </div><!-- Body-->
+
+                            <?php else : ?>
+                                <div class='alert-success text-center' style="padding: 15px;">Mail has been sent. <h4>Please check your email.</h4></div>
+                            <?php endif; ?>
 
                         </div>
                     </div>

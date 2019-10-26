@@ -214,6 +214,15 @@
         return $result;
     }
 
+    // Image placeholder
+    function imagePlaceholder($image='') {
+        if (!$image) {
+            return 'placeholder.jpeg';
+        } else {
+            return $image;
+        }
+    }
+
     // Is admin?
     function is_admin($username) {
         global $connect;
@@ -258,6 +267,14 @@
         } else {
             return false;
         }
+    }
+
+    // Check current user
+    function currentUser() {
+        if (isset($_SESSION['username'])) {
+            return $_SESSION['username'];
+        }
+        return false;
     }
 
     // Register User
