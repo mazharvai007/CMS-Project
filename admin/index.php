@@ -194,3 +194,24 @@
 <?php 
     include("includes/admin_footer.php");
 ?>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<!-- Pusher Integration -->
+<script src="https://js.pusher.com/5.0/pusher.min.js"></script>
+<script>
+
+    // Enable pusher logging - don't include this in production
+    $(document).ready(function () {
+        var puhser = new Pusher('ad1897aebedd9e57665f', {
+            cluster: 'us2',
+            encrypted: true
+        });
+
+        var channel = puhser.subscribe('notifications');
+        channel.bind('new_user', function (notification) {
+            var message = notification.message;
+            toastr.success(`${message} just registered!`);
+        })
+    });
+</script>

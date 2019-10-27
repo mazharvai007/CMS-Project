@@ -116,6 +116,4 @@ include("includes/navigation.php");
     </div>
 
 <!-- Footer -->
-<?php
-    include("includes/footer.php");
-?>
+<?php include("includes/footer.php"); ?>
