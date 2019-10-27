@@ -64,6 +64,15 @@ include("includes/navigation.php");
 
                         <hr>
 
+                        <div class="row">
+                            <div class="pull-right">
+                                <a href="#"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <p class="pull-right">Like: 10</p>
+                        </div>
+
                     <?php }
 
             ?>
@@ -173,6 +182,5 @@ include("includes/navigation.php");
     <hr>
 
     <!-- Footer -->
-<?php
-include("includes/footer.php");
-?>
+<?php include("includes/footer.php"); ?>
+
