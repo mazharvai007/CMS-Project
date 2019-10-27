@@ -4,13 +4,15 @@ include("includes/header.php");
 include("includes/navigation.php");
 
 require "./vendor/autoload.php";
+$dotenv = Dotenv\Dotenv::create(__DIR__);
+$dotenv->load();
 
 $options = array(
     'cluster' => 'us2',
-    'useTLS' => true
+    'encrypted' => true
 );
 
-$pusher = new Pusher\Pusher('ad1897aebedd9e57665f', '77ca2aaea19a700c49a7', '888069', $options);
+$pusher = new Pusher\Pusher(getenv('APP_KEY'), getenv('APP_SECRET'), getenv('APP_ID'), $options);
 
 
 // User Registration
