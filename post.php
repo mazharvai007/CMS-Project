@@ -2,6 +2,10 @@
 // Header and Navigation
 include("includes/header.php");
 include("includes/navigation.php");
+
+if (isset($_POST['liked'])) {
+    echo "<h1>Work</h1>";
+}
 ?>
 
     <!-- Page Content -->
@@ -67,7 +71,7 @@ include("includes/navigation.php");
 
                         <div class="row">
                             <div class="pull-right">
-                                <a class="like" href="#"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a>
+                                <a class="liked" href="#"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a>
                             </div>
                         </div>
                         <div class="row">
@@ -187,8 +191,18 @@ include("includes/navigation.php");
 
 <script>
     $(document).ready(function () {
-       $('.like').click(function () {
-           console.log("Hello");
+        var post_id = <?php echo $the_post_id; ?>;
+        var user_id = 22;
+       $('.liked').click(function () {
+           $.ajax({
+               url: "/practice/php/CMS-Project/post.php?p_id=<?php echo $the_post_id; ?>",
+               type: 'post',
+               data: {
+                   liked: 1,
+                   'post_id': post_id,
+                    'user_id': user_id
+               }
+           });
        });
     });
 </script>
