@@ -33,8 +33,9 @@ include("includes/navigation.php");
                     }
 
                     $select_all_posts_query = mysqli_query($connect, $query);
+                    $result = mysqli_num_rows($select_all_posts_query);
 
-                    if (mysqli_num_rows($select_all_posts_query) < 1 ) {
+                    if ( $result == 0 ) {
                         echo "<h1 class='text-center'>No Post available!</h1>";
                     } else {
 
@@ -66,7 +67,7 @@ include("includes/navigation.php");
 
                         <div class="row">
                             <div class="pull-right">
-                                <a href="#"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a>
+                                <a class="like" href="#"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a>
                             </div>
                         </div>
                         <div class="row">
@@ -183,4 +184,12 @@ include("includes/navigation.php");
 
     <!-- Footer -->
 <?php include("includes/footer.php"); ?>
+
+<script>
+    $(document).ready(function () {
+       $('.like').click(function () {
+           console.log("Hello");
+       });
+    });
+</script>
 
