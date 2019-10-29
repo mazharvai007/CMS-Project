@@ -22,6 +22,25 @@ if (isset($_POST['liked'])) {
     mysqli_query($connect, "INSERT INTO likes(user_id, post_id) VALUES($user_id, $post_id)");
     exit();
 }
+
+if (isset($_POST['unliked'])) {
+    $post_id = $_POST['post_id'];
+    $user_id = $_POST['user_id'];
+
+// 1 - Select/Fetching the right Post
+
+    $searchPostQuery = "SELECT * FROM posts WHERE post_id=$post_id";
+    $postResult = mysqli_query($connect, $searchPostQuery);
+    $post = mysqli_fetch_array($postResult);
+    $likes = $post['post_likes'];
+
+//    2 - Delete likes
+    mysqli_query($connect, "DELETE FROM likes WHERE post_id = $post_id AND user_id = $user_id");
+
+// 3 - Update Post with decrement with likes
+    mysqli_query($connect, "UPDATE posts SET post_likes = $likes - 1 WHERE post_id = $post_id");
+    exit();
+}
 ?>
 
     <!-- Page Content -->
@@ -90,7 +109,9 @@ if (isset($_POST['liked'])) {
 
                         <div class="row">
                             <div class="pull-right">
-                                <a class="liked" href="#"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a>
+                                <a class="liked" href="#"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a> <br>
+                                <a class="unliked" href="#"><i class="glyphicon glyphicon-thumbs-down"></i> Unlike</a>
+
                             </div>
                         </div>
                         <div class="row">
@@ -212,17 +233,31 @@ if (isset($_POST['liked'])) {
     $(document).ready(function () {
         var post_id = <?php echo $the_post_id; ?>;
         var user_id = 22;
+        // Like
        $('.liked').click(function () {
            $.ajax({
                url: "/practice/php/CMS-Project/post.php?p_id=<?php echo $the_post_id; ?>",
                type: 'post',
                data: {
-                   liked: 1,
+                   'liked': 1,
                    'post_id': post_id,
-                    'user_id': user_id
+                   'user_id': user_id
                }
            });
        });
+
+       // Unlike
+        $('.unliked').click(function () {
+            $.ajax({
+                url: "/practice/php/CMS-Project/post.php?p_id=<?php echo $the_post_id; ?>",
+                type: 'post',
+                data: {
+                    'unliked': 1,
+                    'post_id': post_id,
+                    'user_id': user_id
+                }
+            });
+        });
     });
 </script>
 
