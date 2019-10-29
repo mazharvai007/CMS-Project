@@ -4,7 +4,21 @@ include("includes/header.php");
 include("includes/navigation.php");
 
 if (isset($_POST['liked'])) {
-    echo "<h1>Work</h1>";
+    $post_id = $_POST['post_id'];
+/*
+ * 1 - Select Post
+ * 2 - Update Post with likes
+ * 3 - Create likes for post
+ */
+
+    $searchPostQuery = "SELECT * FROM posts WHERE post_id=$post_id";
+    $postResult = mysqli_query($connect, $searchPostQuery);
+    $post = mysqli_fetch_array($postResult);
+    $likes = $post['post_likes'];
+
+    if (mysqli_num_rows($postResult) >= 1) {
+        echo $post['post_id'];
+    }
 }
 ?>
 
@@ -21,36 +35,39 @@ if (isset($_POST['liked'])) {
                 if (isset($_GET['p_id'])) {
                     $the_post_id = $_GET['p_id'];
 
-                    // Post veiw count query
-                    $view_query = "UPDATE posts SET post_views_count = post_views_count + 1 WHERE post_id = $the_post_id ";
-                    $send_view_query = mysqli_query($connect, $view_query);
+                    // Use MYSQLI Prepare statement for updating post
+                    $update_statement = mysqli_prepare($connect, "UPDATE posts SET post_views_count = post_views_count + 1 WHERE post_id = ?");
+                    mysqli_stmt_bind_param($update_statement, "i", $the_post_id);
+                    mysqli_stmt_execute($update_statement);
 
-                    // Check the view count query
-                    if (!$send_view_query) {
-                        die("Query Failed! " . mysqli_error($connect));
+                    if (!$update_statement) {
+                        die("Query Failed! " . mysqli_stmt_error($connect));
                     }
 
-                    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin') {
-                        $query = "SELECT * FROM posts WHERE post_id = $the_post_id ";
+                    if (isset($_SESSION['username']) && is_admin($_SESSION['username'])) {
+                        $stmt1 = mysqli_prepare($connect, "SELECT post_title, post_author, post_user, post_date, post_image, post_content FROM posts WHERE post_id = ? ");
                     } else {
-                        $query = "SELECT * FROM posts WHERE post_id = $the_post_id AND post_status == 'published' ";
+                        $stmt2 = mysqli_prepare($connect, "SELECT post_title, post_author, post_user, post_date, post_image, post_content FROM posts WHERE post_id = ? AND post_status = ? ");
+
+                        $published = 'published';
                     }
 
-                    $select_all_posts_query = mysqli_query($connect, $query);
-                    $result = mysqli_num_rows($select_all_posts_query);
+                    if (isset($stmt1)) {
+                        mysqli_stmt_bind_param($stmt1, "i", $the_post_id);
+                        mysqli_stmt_execute($stmt1);
+                        mysqli_stmt_bind_result($stmt1, $post_title, $post_author, $post_user, $post_date, $post_image, $post_content);
 
-                    if ( $result == 0 ) {
-                        echo "<h1 class='text-center'>No Post available!</h1>";
+                        $stmt = $stmt1;
                     } else {
+                        mysqli_stmt_bind_param($stmt2, "is", $the_post_id, $published);
+                        mysqli_stmt_execute($stmt2);
+                        mysqli_stmt_bind_result($stmt2, $post_title, $post_author, $post_user, $post_date, $post_image, $post_content);
 
-                    while ($posts = mysqli_fetch_assoc($select_all_posts_query)) {
-                        $post_title = $posts["post_title"];
-                        $post_author = $posts["post_author"];
-                        $post_date = $posts["post_date"];
-                        $post_image = $posts["post_image"];
-                        $post_content = $posts["post_content"];
+                        $stmt = $stmt2;
+                    }
 
-                        ?>
+
+                    while (mysqli_stmt_fetch($stmt)) { ?>
 
                         <!-- First Blog Post -->
                         <h2>
@@ -77,10 +94,10 @@ if (isset($_POST['liked'])) {
                         <div class="row">
                             <p class="pull-right">Like: 10</p>
                         </div>
-
-                    <?php }
-
-            ?>
+                    <?php
+                        // Freeing result
+                        mysqli_stmt_free_result($stmt);
+                    ?>
 
 
             <!-- Blog Comments -->
