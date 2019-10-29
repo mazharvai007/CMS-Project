@@ -5,18 +5,22 @@ include("includes/navigation.php");
 
 if (isset($_POST['liked'])) {
     $post_id = $_POST['post_id'];
-/*
- * 1 - Select/Fetching the right Post
- * 2 - Update Post with likes
- * 3 - Create likes for post
- */
+    $user_id = $_POST['user_id'];
+
+// 1 - Select/Fetching the right Post
 
     $searchPostQuery = "SELECT * FROM posts WHERE post_id=$post_id";
     $postResult = mysqli_query($connect, $searchPostQuery);
     $post = mysqli_fetch_array($postResult);
     $likes = $post['post_likes'];
 
+// 2 - Update Post with likes
+
     mysqli_query($connect, "UPDATE posts SET post_likes = $likes + 1 WHERE post_id = $post_id");
+
+// 3 - Create likes for post
+    mysqli_query($connect, "INSERT INTO likes(user_id, post_id) VALUES($user_id, $post_id)");
+    exit();
 }
 ?>
 
