@@ -6,7 +6,7 @@ include("includes/navigation.php");
 if (isset($_POST['liked'])) {
     $post_id = $_POST['post_id'];
 /*
- * 1 - Select Post
+ * 1 - Select/Fetching the right Post
  * 2 - Update Post with likes
  * 3 - Create likes for post
  */
@@ -16,9 +16,7 @@ if (isset($_POST['liked'])) {
     $post = mysqli_fetch_array($postResult);
     $likes = $post['post_likes'];
 
-    if (mysqli_num_rows($postResult) >= 1) {
-        echo $post['post_id'];
-    }
+    mysqli_query($connect, "UPDATE posts SET post_likes = $likes + 1 WHERE post_id = $post_id");
 }
 ?>
 
