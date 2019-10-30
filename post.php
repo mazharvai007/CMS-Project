@@ -39,7 +39,7 @@ if (isset($_POST['unliked'])) {
 
 // 3 - Update Post with decrement with likes
     mysqli_query($connect, "UPDATE posts SET post_likes = $likes - 1 WHERE post_id = $post_id");
-    
+
     exit();
 }
 ?>
@@ -108,19 +108,26 @@ if (isset($_POST['unliked'])) {
 
                         <hr>
 
+                        <?php
+                            // Freeing result
+                            mysqli_stmt_free_result($stmt);
+                        ?>
+
                         <div class="row">
                             <div class="pull-right">
-                                <a class="liked" href="#"><i class="glyphicon glyphicon-thumbs-up"></i> Like</a> <br>
-                                <a class="unliked" href="#"><i class="glyphicon glyphicon-thumbs-down"></i> Unlike</a>
-
+                                <a class="<?php echo userLikedThispost($the_post_id) ? 'unliked' : 'liked'; ?>" href="">
+                                    <i class="glyphicon glyphicon-thumbs-up"></i>
+                                    <span><?php echo userLikedThispost($the_post_id) ? 'Unlike' : 'Like'; ?></span>
+                                </a>
                             </div>
                         </div>
                         <div class="row">
                             <p class="pull-right">Like: 10</p>
                         </div>
                     <?php
-                        // Freeing result
-                        mysqli_stmt_free_result($stmt);
+
+
+
                     ?>
 
 
