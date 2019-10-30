@@ -1,4 +1,5 @@
 <?php
+
 // Start hash format
 //        $password = 'secret';
 //        $hash_format = "$2y$710&";
