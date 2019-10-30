@@ -115,14 +115,14 @@ if (isset($_POST['unliked'])) {
 
                         <div class="row">
                             <div class="pull-right">
-                                <a class="<?php echo userLikedThispost($the_post_id) ? 'unliked' : 'liked'; ?>" href="">
+                                <a class="<?php echo userLikedThispost($the_post_id) ? 'unlike' : 'like'; ?>" href="#">
                                     <i class="glyphicon glyphicon-thumbs-up"></i>
                                     <span><?php echo userLikedThispost($the_post_id) ? 'Unlike' : 'Like'; ?></span>
                                 </a>
                             </div>
                         </div>
                         <div class="row">
-                            <p class="pull-right">Like: 10</p>
+                            <p class="pull-right">Like: <?php //echo getPostLikes($the_post_id); ?></p>
                         </div>
                     <?php
 
