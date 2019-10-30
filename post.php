@@ -39,6 +39,7 @@ if (isset($_POST['unliked'])) {
 
 // 3 - Update Post with decrement with likes
     mysqli_query($connect, "UPDATE posts SET post_likes = $likes - 1 WHERE post_id = $post_id");
+    
     exit();
 }
 ?>

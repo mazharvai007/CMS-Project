@@ -6,6 +6,13 @@
         exit();
     }
 
+    // Query Function
+    function query($query) {
+        global $connect;
+
+        return mysqli_query($connect, $query);
+    }
+
     // Check Method
     function ifItIsMethod($method = null) {
         if ($_SERVER['REQUEST_METHOD'] == strtoupper($method)) {
@@ -20,6 +27,13 @@
             return true;
         }
         return false;
+    }
+
+    // Logged in User ID
+    function loggedInUserId() {
+        if (isLoggedIn()) {
+            $result = query("SELECT * FROM users WHERE username ='" . $_SESSION['username'] . "' ");
+        }
     }
 
     // Check user logged in
