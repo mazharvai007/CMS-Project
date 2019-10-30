@@ -14,7 +14,7 @@
 //    }
 
     // Header and Navigation
-    include("includes/db.php");
+//    include("includes/db.php");
     include("includes/header.php");
     include("includes/navigation.php");
 

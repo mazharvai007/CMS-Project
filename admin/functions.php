@@ -6,6 +6,13 @@
         exit();
     }
 
+    // Query Function
+    function query($query) {
+        global $connect;
+
+        return mysqli_query($connect, $query);
+    }
+
     // Check Method
     function ifItIsMethod($method = null) {
         if ($_SERVER['REQUEST_METHOD'] == strtoupper($method)) {
@@ -334,5 +341,29 @@
 //            redirect("/practice/php/CMS-Project/index.php");
             return false;
         }
+    }
+
+    // Logged in User ID
+    function loggedInUserId() {
+        if (isLoggedIn()) {
+            $result = query("SELECT * FROM users WHERE username ='" . $_SESSION['username'] . "' ");
+            confirmQuery($result);
+            $user = mysqli_fetch_array($result);
+            return mysqli_num_rows($result) >= 1 ? $user['user_id'] : false;
+        }
+        return false;
+    }
+
+    // Check user like post?
+    function userLikedThispost($post_id) {
+        $result = query("SELECT * FROM likes WHERE user_id = '" . loggedInUserId() . "' AND post_id={$post_id} ");
+        confirmQuery($result);
+        return mysqli_num_rows($result) >= 1 ? true : false;
+    }
+
+    // Get all likes of a post
+    function getPostLikes($post_id) {
+        $result = query("SELECT * FROM likes WHERE post_id =$post_id");
+        return mysqli_num_rows($result);
     }
 ?>
