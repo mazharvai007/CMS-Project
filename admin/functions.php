@@ -1,19 +1,50 @@
 <?php
 
-    // Redirection
-    function redirect($location) {
-        return header("Location:" . $location);
-        exit();
+//========= START DATABASE HELPER =========//
+
+// Redirection
+function redirect($location) {
+    return header("Location:" . $location);
+    exit();
+}
+
+// Query Function
+function query($query) {
+    global $connect;
+    $result = mysqli_query($connect, $query);
+    confirmQuery($result);
+    return $result;
+}
+
+function fetchRecords($result) {
+    return mysqli_fetch_array($result);
+}
+//========= START DATABASE HELPER =========//
+
+//========= START AUTHENTICATION HELPER =========//
+// Is admin?
+function is_admin() {
+    if (isLoggedIn()) {
+        $user_query = query("SELECT user_role FROM users WHERE user_id =" . $_SESSION['user_id'] . " ");
+        $row = fetchRecords($user_query);
+
+        if ($row['user_role'] == 'admin') {
+            return true;
+        } else {
+            return false;
+        }
     }
+    return false;
+}
+//========= END AUTHENTICATION HELPER =========//
 
-    // Query Function
-    function query($query) {
-        global $connect;
+//========= START GENERAL HELPER =========//
+function get_user_name() {
+    return isset($_SESSION['username']) ? $_SESSION['username'] : null;
+}
+//========= END GENERAL HELPER =========//
 
-        return mysqli_query($connect, $query);
-    }
-
-    // Check Method
+// Check Method
     function ifItIsMethod($method = null) {
         if ($_SERVER['REQUEST_METHOD'] == strtoupper($method)) {
             return true;
@@ -230,22 +261,7 @@
         }
     }
 
-    // Is admin?
-    function is_admin($username) {
-        global $connect;
 
-        $user_query = "SELECT user_role FROM users WHERE username = '$username' ";
-        $result = mysqli_query($connect, $user_query);
-        confirmQuery($result);
-
-        $row = mysqli_fetch_array($result);
-
-        if ($row['user_role'] == 'admin') {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     // Check username
     function checkUsername($username) {
@@ -331,6 +347,7 @@
 
         // Password HASH with verify between login and db
         if (password_verify($password, $db_user_password)) {
+            $_SESSION['user_id'] = $db_user_id;
             $_SESSION['username'] = $db_username;
             $_SESSION['firstname'] = $db_user_firstname;
             $_SESSION['lastname'] = $db_user_lastname;
