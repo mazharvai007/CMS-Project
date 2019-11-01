@@ -1,6 +1,6 @@
 <?php
 
-//========= START DATABASE HELPER =========//
+//========= START DATABASE HELPERS =========//
 
 // Redirection
 function redirect($location) {
@@ -19,9 +19,13 @@ function query($query) {
 function fetchRecords($result) {
     return mysqli_fetch_array($result);
 }
-//========= START DATABASE HELPER =========//
 
-//========= START AUTHENTICATION HELPER =========//
+function numRowsRecords($result) {
+    return mysqli_num_rows($result);
+}
+//========= START DATABASE HELPERS =========//
+
+//========= START AUTHENTICATION HELPERS =========//
 // Is admin?
 function is_admin() {
     if (isLoggedIn()) {
@@ -36,14 +40,57 @@ function is_admin() {
     }
     return false;
 }
-//========= END AUTHENTICATION HELPER =========//
+// Logged in User ID
+function loggedInUserId() {
+    if (isLoggedIn()) {
+        $result = query("SELECT * FROM users WHERE username ='" . $_SESSION['username'] . "' ");
+        confirmQuery($result);
+        $user = mysqli_fetch_array($result);
+        return mysqli_num_rows($result) >= 1 ? $user['user_id'] : false;
+    }
+    return false;
+}
+//========= END AUTHENTICATION HELPERS =========//
 
-//========= START GENERAL HELPER =========//
+//========= START GENERAL HELPERS =========//
 function get_user_name() {
     return isset($_SESSION['username']) ? $_SESSION['username'] : null;
 }
-//========= END GENERAL HELPER =========//
+//========= END GENERAL HELPERS =========//
 
+//========= START USRT SPECIFIC HELPERS =========//
+// Record count of dashboard
+function recordCount($table) {
+
+    $post_query = query("SELECT * FROM $table");
+    return numRowsRecords($post_query);
+}
+
+// Get all posts of user
+function getAllPostsUser() {
+
+    $post_query = query("SELECT * FROM posts INNER JOIN users ON posts.post_id = users.user_id WHERE user_id= ".loggedInUserId()." ");
+    return numRowsRecords($post_query);
+}
+
+// Get all comments of user
+function getAllCommentsUser() {
+    $comment_query = query("SELECT * FROM posts INNER JOIN comments ON posts.post_id = comments.comment_post_id INNER JOIN users ON posts.post_id = users.user_id WHERE user_id =".loggedInUserId()." ");
+    return numRowsRecords($comment_query);
+}
+
+// Get all categories of user
+function getAllCategoriesUser() {
+    $category_query = query("SELECT * FROM categories WHERE cat_user_id=".loggedInUserId()." ");
+    return numRowsRecords($category_query);
+}
+
+// Check post, comments, and users (Dashboard Chart)
+function checkStatus($table, $column, $status) {
+
+    $checkStatus_query = query("SELECT * FROM $table WHERE $column = '$status' ");
+    return numRowsRecords($checkStatus_query);
+}
 // Check Method
     function ifItIsMethod($method = null) {
         if ($_SERVER['REQUEST_METHOD'] == strtoupper($method)) {
@@ -226,32 +273,6 @@ function get_user_name() {
     }
     users_online();
 
-    // Record count of dashboard
-    function recordCount($table) {
-        global $connect;
-
-        $post_query = "SELECT * FROM . $table";
-        $select_all_post = mysqli_query($connect, $post_query);
-        $result = mysqli_num_rows($select_all_post);
-
-        confirmQuery($result);
-
-        return $result;
-    }
-
-    // Check post, comments, and users
-    function checkStatus($table, $column, $status) {
-        global $connect;
-
-        $checkStatus_query = "SELECT * FROM $table WHERE $column = '$status' ";
-        $select_all_pub_post = mysqli_query($connect, $checkStatus_query);
-        $result = mysqli_num_rows($select_all_pub_post);
-
-        confirmQuery($result);
-
-        return $result;
-    }
-
     // Image placeholder
     function imagePlaceholder($image='') {
         if (!$image) {
@@ -360,16 +381,7 @@ function get_user_name() {
         }
     }
 
-    // Logged in User ID
-    function loggedInUserId() {
-        if (isLoggedIn()) {
-            $result = query("SELECT * FROM users WHERE username ='" . $_SESSION['username'] . "' ");
-            confirmQuery($result);
-            $user = mysqli_fetch_array($result);
-            return mysqli_num_rows($result) >= 1 ? $user['user_id'] : false;
-        }
-        return false;
-    }
+
 
     // Check user like post?
     function userLikedThispost($post_id) {

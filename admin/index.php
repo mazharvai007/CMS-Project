@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    Welcome to Admin
+                    Welcome to
                     <small><?php echo strtoupper(get_user_name()); ?></small>
                 </h1>
 
@@ -34,7 +34,7 @@
 
         <!-- /.row -->
         <div class="row">
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-4 col-md-6">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <div class="row">
@@ -42,7 +42,7 @@
                                 <i class="fa fa-file-text fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class='huge'><?php echo $post_count = recordCount('posts'); ?></div>
+                                <div class='huge'><?php echo $post_count = getAllPostsUser(); ?></div>
                                 <div>Posts</div>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-4 col-md-6">
                 <div class="panel panel-green">
                     <div class="panel-heading">
                         <div class="row">
@@ -64,7 +64,7 @@
                                 <i class="fa fa-comments fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class='huge'><?php echo $comment_count = recordCount('comments'); ?></div>
+                                <div class='huge'><?php echo $comment_count = getAllCommentsUser(); ?></div>
                                 <div>Comments</div>
                             </div>
                         </div>
@@ -78,29 +78,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-yellow">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-user fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class='huge'><?php echo $user_count = recordCount('users'); ?></div>
-                                <div> Users</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="users.php">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-4 col-md-6">
                 <div class="panel panel-red">
                     <div class="panel-heading">
                         <div class="row">
@@ -108,7 +86,7 @@
                                 <i class="fa fa-list fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class='huge'><?php echo $category_count = recordCount('categories'); ?></div>
+                                <div class='huge'><?php echo $category_count = getAllCategoriesUser(); ?></div>
                                 <div>Categories</div>
                             </div>
                         </div>
@@ -141,12 +119,6 @@
             // Unapproved Comments
             $unapprove_comment_count = checkStatus('comments', 'comment_status', 'unapproved');
 
-            // User Admin
-            $admin_user_count = checkStatus('users', 'user_role', 'admin');
-
-            // User Subscriber
-            $sub_user_count = checkStatus('users', 'user_role', 'subscriber');
-
         ?>
 
         <!-- /.row -->
@@ -159,10 +131,10 @@
                     var data = google.visualization.arrayToDataTable([
                         ['Data', 'Count'],
                         <?php
-                            $element_text = ['Active Posts', 'Pending Post', 'Draft Posts', 'Active Comments', 'Pending Comments', 'Admin', 'Subscriber', 'Categories'];
-                            $element_count = [$post_pub_count, $post_unpub_count, $post_draft_count, $approve_comment_count, $unapprove_comment_count, $admin_user_count, $sub_user_count, $category_count];
+                            $element_text = ['Active Posts', 'Pending Post', 'Draft Posts', 'Active Comments', 'Pending Comments', 'Categories'];
+                            $element_count = [$post_pub_count, $post_unpub_count, $post_draft_count, $approve_comment_count, $unapprove_comment_count, $category_count];
 
-                            for ($i = 0; $i < 8; $i++) {
+                            for ($i = 0; $i < 6; $i++) {
                                 echo "[ '{$element_text[$i]}'" . ", " . "{$element_count[$i]} ], ";
                             }
                         ?>

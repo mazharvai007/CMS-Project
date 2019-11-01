@@ -14,8 +14,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    Welcome to the Admin Dashboard
-                    <small><?php echo $_SESSION['username']; ?></small>
+                    Welcome to Dashboard
+                    <small><?php echo strtoupper(get_user_name()); ?></small>
                 </h1>
 
                 <ol class="breadcrumb">
