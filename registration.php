@@ -4,6 +4,27 @@ include("includes/header.php");
 include("includes/navigation.php");
 
 require "./vendor/autoload.php";
+
+// Language settings
+if (isset($_GET['lang'])) {
+    $_SESSION['lang'] = $_GET['lang'];
+
+    if (isset($_SESSION['lang']) && $_SESSION['lang'] == $_GET['lang']) {
+        echo "
+            <script type='text/javascript'>
+                location.reload();
+            </script>
+        ";
+    }
+
+    if (isset($_SESSION['lang'])) {
+        include "includes/languages".$_SESSION['lang']."php";
+    } else {
+        include "includes/languages/en.php";
+    }
+}
+
+// Start pusher
 $dotenv = Dotenv\Dotenv::create(__DIR__);
 $dotenv->load();
 
@@ -13,7 +34,7 @@ $options = array(
 );
 
 $pusher = new Pusher\Pusher(getenv('APP_KEY'), getenv('APP_SECRET'), getenv('APP_ID'), $options);
-
+// End pusher
 
 // User Registration
 //if (isset($_POST['register'])) {
