@@ -58,17 +58,15 @@ function get_user_name() {
 }
 //========= END GENERAL HELPERS =========//
 
-//========= START USRT SPECIFIC HELPERS =========//
+//========= START USER SPECIFIC HELPERS =========//
 // Record count of dashboard
 function recordCount($table) {
-
     $post_query = query("SELECT * FROM $table");
     return numRowsRecords($post_query);
 }
 
 // Get all posts of user
 function getAllPostsUser() {
-
     $post_query = query("SELECT * FROM posts INNER JOIN users ON posts.post_id = users.user_id WHERE user_id= ".loggedInUserId()." ");
     return numRowsRecords($post_query);
 }
@@ -84,6 +82,19 @@ function getAllCategoriesUser() {
     $category_query = query("SELECT * FROM categories WHERE cat_user_id=".loggedInUserId()." ");
     return numRowsRecords($category_query);
 }
+
+// Get the user published, unpublished and draft post
+function userSpecificAllPost($status) {
+    $userPost = query("SELECT * FROM posts INNER JOIN users ON posts.post_id = users.user_id WHERE users.user_id = ".loggedInUserId()." AND posts.post_status = '$status' ");
+    return numRowsRecords($userPost);
+}
+
+// Get user approved and unapproved comments
+function userSpecificAllComment($status) {
+    $userComment = query("SELECT * FROM comments INNER JOIN users ON comments.comment_post_id = users.user_id WHERE users.user_id = ".loggedInUserId()." AND comments.comment_status = '$status' ");
+    return numRowsRecords($userComment);
+}
+//========= END USER SPECIFIC HELPERS =========//
 
 // Check post, comments, and users (Dashboard Chart)
 function checkStatus($table, $column, $status) {

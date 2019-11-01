@@ -105,19 +105,19 @@
 
         <?php
             // Published Post
-            $post_pub_count = checkStatus('posts', 'post_status', 'published');
+            $post_pub_count = userSpecificAllPost('published');
 
             // Unpublished Post
-            $post_unpub_count = checkStatus('posts', 'post_status', 'unpublished');
+            $post_unpub_count = userSpecificAllPost('unpublished');
 
             // Draft Post
-            $post_draft_count = checkStatus('posts', 'post_status', 'draft');
+            $post_draft_count = userSpecificAllPost('draft');
 
             // Approved Comments
-            $approve_comment_count = checkStatus('comments', 'comment_status', 'approved');
+            $approve_comment_count = userSpecificAllComment('approved');
 
             // Unapproved Comments
-            $unapprove_comment_count = checkStatus('comments', 'comment_status', 'unapproved');
+            $unapprove_comment_count = userSpecificAllComment('unapproved');
 
         ?>
 
