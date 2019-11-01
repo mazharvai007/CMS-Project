@@ -65,6 +65,13 @@ function recordCount($table) {
     return numRowsRecords($post_query);
 }
 
+// Check post, comments, and users (Dashboard Chart)
+function checkStatus($table, $column, $status) {
+
+    $checkStatus_query = query("SELECT * FROM $table WHERE $column = '$status' ");
+    return numRowsRecords($checkStatus_query);
+}
+
 // Get all posts of user
 function getAllPostsUser() {
     $post_query = query("SELECT * FROM posts INNER JOIN users ON posts.post_id = users.user_id WHERE user_id= ".loggedInUserId()." ");
@@ -96,12 +103,6 @@ function userSpecificAllComment($status) {
 }
 //========= END USER SPECIFIC HELPERS =========//
 
-// Check post, comments, and users (Dashboard Chart)
-function checkStatus($table, $column, $status) {
-
-    $checkStatus_query = query("SELECT * FROM $table WHERE $column = '$status' ");
-    return numRowsRecords($checkStatus_query);
-}
 // Check Method
     function ifItIsMethod($method = null) {
         if ($_SERVER['REQUEST_METHOD'] == strtoupper($method)) {
