@@ -75,6 +75,16 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
  
 <!-- Page Content -->
 <div class="container">
+    <div class="row">
+        <form id="lang_form" class="navbar-form navbar-right" action="" method="get">
+            <div class="form-group">
+                <select name="lang" class="form-control" onchange="changeLang()">
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                </select>
+            </div>
+        </form>
+    </div>
     
     <section id="login">
         <div class="container">
@@ -108,6 +118,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         </div> <!-- /.container -->
     </section>
     <hr>
+
+    <script>
+        function changeLang() {
+            document.getElementById("lang_form").submit();
+        }
+    </script>
 
 
 <!-- Footer -->
