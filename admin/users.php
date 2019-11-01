@@ -17,8 +17,8 @@ if (!is_admin($_SESSION['username'])) {
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    Welcome to Admin
-                    <small><?php echo $_SESSION['username']; ?></small>
+                    Welcome to Users
+                    <small><?php echo strtoupper(get_user_name()); ?></small>
                 </h1>
             </div>
         </div>
